@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
 		panelCenter.add(deviceList);
 		
 		JPanel panelNorth = new JPanel();
-		JTextArea profName = new JTextArea("You are logged in as paul@mun.ca");
+		JTextArea profName = new JTextArea("Import Data Page");
 		panelNorth.add(profName);
 		
 		c.add(BorderLayout.NORTH, panelNorth );
