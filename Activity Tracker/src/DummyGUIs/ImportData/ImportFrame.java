@@ -1,14 +1,15 @@
+package DummyGUIs.ImportData;
+import java.awt.BorderLayout;
+import java.awt.Container;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-
-public class MainFrame extends JFrame {
-	public MainFrame(String title) {
+public class ImportFrame extends JFrame {
+	public ImportFrame(String title) {
 		super(title);
 		BorderLayout thicc = new BorderLayout(0, 50);
 		Container c = getContentPane();
