@@ -40,7 +40,6 @@ public class DataFrame extends JFrame {
 		String[] dateNames = {"July 1, 2018", "July 21, 2018", "Aug 4, 2018"};
 		JComboBox dateBox = new JComboBox(dateNames);
 		
-		JButton records = new JButton("Records");
 		JButton edData = new JButton("Edit Data");
 		JButton back = new JButton("Back");
 		
@@ -50,7 +49,6 @@ public class DataFrame extends JFrame {
 		panelWestCenter.add(dateBox);
 		panelWestUpper.add(selActivity);
 		panelWestUpper.add(activityBox);
-		panelWestLower.add(records);
 		panelWestLower.add(edData);
 		panelWestLower.add(back);
 		panelWest.setLayout(new BorderLayout());
