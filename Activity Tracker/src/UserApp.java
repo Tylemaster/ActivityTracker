@@ -94,8 +94,21 @@ public class UserApp {
 		this.deviceList = deviceList;
 	}
 	
-	public static void main(String[] args) {
+	
+	//This method send a request to a new friend
+	public void sendRequest(){
 		
 	}
+	
+	//This method enables the user to accept request
+	public void acceptRequest(){
+		
+	}
+	
+	//This method enables the user to deny request
+	public void denyRequest(){
+		
+	}
+	
 
 }
