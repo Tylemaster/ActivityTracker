@@ -2,17 +2,16 @@ import java.util.ArrayList;
 
 public class Friends{
 		
-		private boolean viewUserList;
-		private boolean viewFriendsList;
-		private boolean viewProfile;
-		private boolean sendRequest;
-		private boolean acceptRequest;
-		private boolean denyRequest;
-		
-		public Friends(String firstName, String lastName, String fullName, String password,
-				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) 
-		{
-			
-		}
-		
+	 private String name;
+	 private ArrayList<Session> friendSession;
+	 
+	/**
+	 * @param name
+	 * @param friendSession
+	 */
+	public Friends(String name, ArrayList<Session> friendSession) {
+		this.name = name;
+		this.friendSession = friendSession;
+	}
+	 
 	}
