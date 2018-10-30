@@ -8,10 +8,18 @@ public class UserApp {
 	private String lastName;
 	private String fullName;
 	private String password;
-	private ArrayList<String> friendsList;
-	private ArrayList<String> sessionList;
-	private ArrayList<String> deviceList;
+	private ArrayList<Friends> friendsList;
+	private ArrayList<Session> sessionList;
+	private ArrayList<Device> deviceList;
 
+	/**
+	 * @return the deviceList
+	 */
+	public ArrayList<Device> getDeviceList() {
+		return deviceList;
+	}
+	/**
+	
 	/**
 	 * @param firstName
 	 * @param lastName
@@ -21,8 +29,8 @@ public class UserApp {
 	 * @param sessionList
 	 * @param deviceList
 	 */
-	public UserApp(String firstName, String lastName, String fullName, String password, ArrayList<String> friendsList,
-			ArrayList<String> sessionList, ArrayList<String> deviceList) {
+	public UserApp(String firstName, String lastName, String fullName, String password, ArrayList<Friends> friendsList,
+			ArrayList<Session> sessionList, ArrayList<Device> deviceList) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = fullName;
@@ -80,38 +88,12 @@ public class UserApp {
 		this.password = password;
 	}
 	
-	public class FriendsList extends UserApp{
-		
-		private boolean viewUserList;
-		private boolean viewFriendsList;
-		private boolean viewProfile;
-		private boolean sendRequest;
-		private boolean acceptRequest;
-		private boolean denyRequest;
-		
-		public FriendsList(String firstName, String lastName, String fullName, String password,
-				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) 
-		{
-			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
-			
-		}
-		
+	 /* @param deviceList the deviceList to set
+	 */
+	public void setDeviceList(ArrayList<Device> deviceList) {
+		this.deviceList = deviceList;
 	}
-	public class Session extends UserApp{
-		
-		private float calories;
-		private float heartRate;
-		private float aveSpeed;
-		private float dehydration;
-		private float cumDistance;
-		private String date;
-		
-		public Session(String firstName, String lastName, String fullName, String password,
-				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) {
-			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
-			// TODO Auto-generated constructor stub
-		}
-	}
+	
 	public static void main(String[] args) {
 		
 	}
