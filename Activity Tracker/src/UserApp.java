@@ -1,4 +1,5 @@
 import java.awt.List;
+import java.util.ArrayList;
 
 public class UserApp {
 	
@@ -6,13 +7,21 @@ public class UserApp {
 	private String lastName;
 	private String fullName;
 	private String password;
-	private List friendsList = new List();
-	private List sessionList = new List();
-	private List deviceList = new List();
-	
-	public UserApp(String firstName, String lastName, String fullName, String password, List friendsList,
-			List sessionList, List deviceList) {
-		super();
+	private ArrayList<String> friendsList;
+	private ArrayList<String> sessionList;
+	private ArrayList<String> deviceList;
+
+	/**
+	 * @param firstName
+	 * @param lastName
+	 * @param fullName
+	 * @param password
+	 * @param friendsList
+	 * @param sessionList
+	 * @param deviceList
+	 */
+	public UserApp(String firstName, String lastName, String fullName, String password, ArrayList<String> friendsList,
+			ArrayList<String> sessionList, ArrayList<String> deviceList) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = fullName;
@@ -46,24 +55,6 @@ public class UserApp {
 		return password;
 	}
 	/**
-	 * @return the friendsList
-	 */
-	public List getFriendsList() {
-		return friendsList;
-	}
-	/**
-	 * @return the sessionList
-	 */
-	public List getSessionList() {
-		return sessionList;
-	}
-	/**
-	 * @return the deviceList
-	 */
-	public List getDeviceList() {
-		return deviceList;
-	}
-	/**
 	 * @param firstName the firstName to set
 	 */
 	public void setFirstName(String firstName) {
@@ -87,28 +78,42 @@ public class UserApp {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	/**
-	 * @param friendsList the friendsList to set
-	 */
-	public void setFriendsList(List friendsList) {
-		this.friendsList = friendsList;
+	
+	public class FriendsList extends UserApp{
+		
+		private boolean viewUserList;
+		private boolean viewFriendsList;
+		private boolean viewProfile;
+		private boolean sendRequest;
+		private boolean acceptRequest;
+		private boolean denyRequest;
+		
+		public FriendsList(String firstName, String lastName, String fullName, String password,
+				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) 
+		{
+			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
+			// TODO Auto-generated constructor stub
+		}
+		
 	}
-	/**
-	 * @param sessionList the sessionList to set
-	 */
-	public void setSessionList(List sessionList) {
-		this.sessionList = sessionList;
+	public class Session extends UserApp{
+		
+		private float calories;
+		private float heartRate;
+		private float aveSpeed;
+		private float dehydration;
+		private float cumDistance;
+		private String date;
+		
+		public Session(String firstName, String lastName, String fullName, String password,
+				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) {
+			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
+			// TODO Auto-generated constructor stub
+		}
+
+		
+		
 	}
-	/**
-	 * @param deviceList the deviceList to set
-	 */
-	public void setDeviceList(List deviceList) {
-		this.deviceList = deviceList;
-	}
-
-
-
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
