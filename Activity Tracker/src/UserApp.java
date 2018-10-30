@@ -93,7 +93,7 @@ public class UserApp {
 				ArrayList<String> friendsList, ArrayList<String> sessionList, ArrayList<String> deviceList) 
 		{
 			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
-			// TODO Auto-generated constructor stub
+			
 		}
 		
 	}
@@ -117,7 +117,6 @@ public class UserApp {
 	}
 	public static void main(String[] args) {
 		
-
 	}
 
 }
