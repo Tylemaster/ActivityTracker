@@ -111,9 +111,6 @@ public class UserApp {
 			super(firstName, lastName, fullName, password, friendsList, sessionList, deviceList);
 			// TODO Auto-generated constructor stub
 		}
-
-		
-		
 	}
 	public static void main(String[] args) {
 		
