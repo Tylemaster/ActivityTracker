@@ -122,7 +122,9 @@ public class ActivityTracker {
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//If statement will have to be added here if the username or password is invalid, take them to invalid page, otherwise to the home screen
+				/*If statement will have to be added here if the username or password is invalid, take them to invalid page, otherwise to the home screen
+				 *if not invalid, user will be created with the entered createProfName and createProfPass variables and added to the external storage 
+				 */
 				card.show(mainPanel, "Home");
 			}
 		});
@@ -170,7 +172,11 @@ public class ActivityTracker {
 		JButton btnLogIn_1 = new JButton("Log In");
 		btnLogIn_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//if statement will have to be added here, if username or password is invalid take them to invalid page, otherwise home screen
+				/*if statement will have to be added here, if username or password is invalid take them to invalid page.
+				 * To check for validity, must see if username or password(logInName and logInPass) is null, or matched any of the stored usernames and passwords.
+				 * If it does match, user is valid, and taken to homescreen. The Statistics, Friends, and Devices panels must also be redrawn, with the information from
+				 * this user. (possibly add log in method)
+				 */
 				card.show(mainPanel, "Home");
 			}
 		});
@@ -264,11 +270,12 @@ public class ActivityTracker {
 		btnAddDevice.setBounds(381, 227, 110, 23);
 		ImportData.add(btnAddDevice);
 		
-		//This combo box will hold all devices
+		//This combo box will hold all devices, will have to be updated when user 1. logs in and 2. adds a device
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(381, 93, 110, 20);
 		ImportData.add(comboBox);
 		
+		//This button will have to read the data being given from the selected device, and add it to/redraw the statistics panel
 		JButton btnImport = new JButton("Import");
 		btnImport.setBounds(183, 92, 89, 23);
 		ImportData.add(btnImport);
@@ -293,7 +300,7 @@ public class ActivityTracker {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//add code here to add device
+				//add code here to add device, and redraw the import data page with this new device
 				card.show(mainPanel, "Import Data");
 			}
 		});
