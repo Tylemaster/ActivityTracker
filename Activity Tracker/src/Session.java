@@ -4,29 +4,24 @@ public class Session{
 		
 		private float calories;
 		private float heartRate;
-		private float aveSpeed;
 		private float dehydration;
-		private float cumDistance;
 		private String date;
-		private Activity activityType;
 		/**
 		 * @param calories
 		 * @param heartRate
-		 * @param aveSpeed
 		 * @param dehydration
-		 * @param cumDistance
 		 * @param date
-		 * @param activityType
 		 */
-		public Session(float calories, float heartRate, float aveSpeed, float dehydration, float cumDistance,
-				String date, Activity activityType) {
+		public Session(float calories, float heartRate, float dehydration, String date) {
 			this.calories = calories;
 			this.heartRate = heartRate;
-			this.aveSpeed = aveSpeed;
 			this.dehydration = dehydration;
-			this.cumDistance = cumDistance;
 			this.date = date;
-			this.activityType = activityType;
+		}
+		
+		//this method will take in all the changed data that the user gives and update the current session
+		private void updateSession(float calories, float heartRate, float dehydration, String date) {
+			
 		}
 		
 		
