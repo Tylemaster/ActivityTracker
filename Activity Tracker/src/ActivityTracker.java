@@ -31,6 +31,7 @@ public class ActivityTracker {
 	private JTextField logInPass;
 	private JTextField newDeviceName;
 	private JTable ActivityTable;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -300,7 +301,7 @@ public class ActivityTracker {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//add code here to add device, and redraw the import data page with this new device
+				//add code here to add device (newDeviceName) to the current user profile, and redraw the import data page with this new device
 				card.show(mainPanel, "Import Data");
 			}
 		});
@@ -334,6 +335,7 @@ public class ActivityTracker {
 		JLabel lblSelectActivity = new JLabel("Select Activity: ");
 		upper.add(lblSelectActivity);
 		
+		//This combobox will add all activities, and update the sessions combo box and the activity table
 		JComboBox ActivityComboBox = new JComboBox();
 		upper.add(ActivityComboBox);
 		
@@ -344,6 +346,7 @@ public class ActivityTracker {
 		JLabel lblNewLabel_1 = new JLabel("Select Date: ");
 		center.add(lblNewLabel_1);
 		
+		//this combobox will hold all the session dates of the currently selected user, changing this will update the table
 		JComboBox DateCombo = new JComboBox();
 		center.add(DateCombo);
 		
@@ -359,6 +362,7 @@ public class ActivityTracker {
 		});
 		lower.add(btnBack_4);
 		
+		//this button will change the table so that it can be edited, which will update the sessions
 		JButton btnEditData = new JButton("Edit Data");
 		lower.add(btnEditData);
 		
@@ -367,6 +371,7 @@ public class ActivityTracker {
 		East.setLayout(new BorderLayout(0, 0));
 		
 		
+		//Activity table will pull from the currently selected session of the current user and display
 		String [] datColumns = {"Stat", "1Km", "2Km", "Total"};
 		Object[][] data = {{"Calories", new Integer(30), new Integer(62), new Integer(92)},{"Heart Rate", "100 bpm", "112 bpm", "106 bpm"}, {"Ave. Speed", "6 km/h", "10 km/h", "8 km/h"}, {"Dehydration", "10ml", "12ml", "22ml"}, {"Cum. Distance", "1km", "2km", "2km"}};
 		ActivityTable = new JTable(data, datColumns);
@@ -385,7 +390,7 @@ public class ActivityTracker {
 		mainPanel.add(Friends, "Friends");
 		Friends.setLayout(new BorderLayout(0, 0));
 		
-		
+		//table will show list of current friends pulled from user friends list
 		JList friendsList = new JList();
 		JScrollPane scrollPane = new JScrollPane(friendsList);
 		Friends.add(scrollPane, BorderLayout.EAST);
@@ -396,10 +401,21 @@ public class ActivityTracker {
 		Box verticalBox = Box.createVerticalBox();
 		friendOptions.add(verticalBox);
 		
+		//button will send user to view data screen which will be updated with the data sessions of the currently selected friend
 		JButton btnViewFriend = new JButton("View Friend");
+		btnViewFriend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Friend Data");
+			}
+		});
 		verticalBox.add(btnViewFriend);
 		
 		JButton btnAddFriend = new JButton("Add Friend");
+		btnAddFriend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Add Friend");
+			}
+		});
 		verticalBox.add(btnAddFriend);
 		
 		JButton btnBack_5 = new JButton("Back");
@@ -432,6 +448,98 @@ public class ActivityTracker {
 		});
 		btnBack_6.setBounds(311, 196, 89, 23);
 		InvalidCreate.add(btnBack_6);
+		
+		JPanel FriendData = new JPanel();
+		mainPanel.add(FriendData, "Friend Data");
+		FriendData.setLayout(new BorderLayout(0, 0));
+		
+		JPanel FriendOptions = new JPanel();
+		FriendData.add(FriendOptions, BorderLayout.WEST);
+		
+		Box verticalBox_2 = Box.createVerticalBox();
+		FriendOptions.add(verticalBox_2);
+		
+		JPanel upper_1 = new JPanel();
+		verticalBox_2.add(upper_1);
+		
+		JLabel lblSelectActivity_1 = new JLabel("Select Activity: ");
+		upper_1.add(lblSelectActivity_1);
+		
+		//This combo box will have all the programs activities
+		JComboBox friend_activity = new JComboBox();
+		upper_1.add(friend_activity);
+		
+		JPanel center_1 = new JPanel();
+		verticalBox_2.add(center_1);
+		
+		JLabel lblSelectDate = new JLabel("Select Date: ");
+		center_1.add(lblSelectDate);
+		
+		//this combo box will have all the sessions of the chosen activity type in the friends data, and choosing one will update the table
+		JComboBox friend_date = new JComboBox();
+		center_1.add(friend_date);
+		
+		JPanel lower_1 = new JPanel();
+		verticalBox_2.add(lower_1);
+		
+		JButton btnBack_7 = new JButton("Back");
+		btnBack_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Friends");
+			}
+		});
+		lower_1.add(btnBack_7);
+		
+		JPanel FriendEast = new JPanel();
+		FriendData.add(FriendEast, BorderLayout.EAST);
+		
+		//this table will access the current session selected from the selested friends profile and display the data
+		table = new JTable();
+		JScrollPane friendTableScroll = new JScrollPane(table);
+		FriendEast.add(friendTableScroll);
+		
+		
+		
+		JPanel FriendHeader = new JPanel();
+		FriendData.add(FriendHeader, BorderLayout.NORTH);
+		
+		JLabel lblFriendStatistics = new JLabel("Friend Statistics");
+		FriendHeader.add(lblFriendStatistics);
+		
+		JPanel AddFriends = new JPanel();
+		mainPanel.add(AddFriends, "Add Friend");
+		AddFriends.setLayout(new BorderLayout(0, 0));
+		
+		//this list will display all users on the activity tracker profile
+		JList usersList = new JList();
+		JScrollPane scrollPane_1 = new JScrollPane(usersList);
+		AddFriends.add(scrollPane_1, BorderLayout.EAST);
+		
+		JPanel usersHeader = new JPanel();
+		AddFriends.add(usersHeader, BorderLayout.NORTH);
+		
+		JLabel lblAddFriend = new JLabel("Add Friend");
+		usersHeader.add(lblAddFriend);
+		
+		JPanel addOptions = new JPanel();
+		AddFriends.add(addOptions, BorderLayout.WEST);
+		
+		Box verticalBox_3 = Box.createVerticalBox();
+		addOptions.add(verticalBox_3);
+		
+		//this button will send a friend request to the currently selected user
+		JButton btnSendRequest = new JButton("Send Request");
+		verticalBox_3.add(btnSendRequest);
+		
+		JButton btnBack_8 = new JButton("Back");
+		btnBack_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Friends");
+			}
+		});
+		verticalBox_3.add(btnBack_8);
+		
+		
 		
 		
 
