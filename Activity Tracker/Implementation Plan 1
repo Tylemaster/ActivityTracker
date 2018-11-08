@@ -1,0 +1,14 @@
+CS 2005 Nov. 8 – First Iteration
+	
+	For the first iteration of the project we decided to implement the Create Profile use case.
+This use case involves the user opening the “Create Profile” screen and entering a username and password. 
+The app then stores this information, and then whenever the user accesses their account the app will verify their 
+information is correct, and load the data associated with the account. 
+	
+	For our implementation of Create Profile, the biggest challenge was how to store the user’s profile data. 
+We decided to store a user as an object in a text file. When a user creates an account, the methods in the GUI take 
+the username and password and instantiate a current user with the entered information. This information is then stored 
+in a text file, and the GUI sets the current user to this user and takes them to the home screen where they can view 
+their data. Subsequently when the user attempts to log in, the GUI will scan the text file to find a matching name and 
+password. If no match is found, the user will be shown an error message; otherwise, the GUI sets the current user as this
+ user.

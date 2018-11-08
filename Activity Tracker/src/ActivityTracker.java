@@ -120,6 +120,9 @@ public class ActivityTracker {
 		btnBack.setBounds(201, 227, 89, 23);
 		CreateProfile.add(btnBack);
 		
+		
+		
+		
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,6 +134,10 @@ public class ActivityTracker {
 		});
 		btnCreate.setBounds(397, 227, 89, 23);
 		CreateProfile.add(btnCreate);
+		
+		
+		
+		
 		
 		JLabel lblCreateProfilePage = new JLabel("Create Profile");
 		lblCreateProfilePage.setBounds(312, 11, 130, 14);
@@ -169,6 +176,8 @@ public class ActivityTracker {
 		logInPass.setBounds(357, 139, 145, 20);
 		LogIn.add(logInPass);
 		logInPass.setColumns(10);
+
+		
 		
 		JButton btnLogIn_1 = new JButton("Log In");
 		btnLogIn_1.addActionListener(new ActionListener() {
@@ -183,6 +192,9 @@ public class ActivityTracker {
 		});
 		btnLogIn_1.setBounds(400, 227, 89, 23);
 		LogIn.add(btnLogIn_1);
+		
+		
+		
 		
 		JButton btnBack_1 = new JButton("Back");
 		btnBack_1.addActionListener(new ActionListener() {
