@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.JTextPane;
@@ -187,7 +188,23 @@ public class ActivityTracker {
 				 * If it does match, user is valid, and taken to homescreen. The Statistics, Friends, and Devices panels must also be redrawn, with the information from
 				 * this user. (possibly add log in method)
 				 */
-				card.show(mainPanel, "Home");
+				Scanner textScan = new Scanner(new File("username.txt>"));	
+				while(textScan.hasNextLine()){
+					String str = textScan.nextLine();
+					if(str.indexOf(logInName.getText()) != -1){
+						if(textScan.nextLine() == logInPass.getText()){
+							card.show(mainPanel, "Home");
+							/*currentUser set to logInName.getText()
+							 */
+						}
+					}
+				}
+						else{
+							card.show(mainPanel, "Error");
+							/*currentUser set to null
+							 */
+				}
+				
 			}
 		});
 		btnLogIn_1.setBounds(400, 227, 89, 23);
