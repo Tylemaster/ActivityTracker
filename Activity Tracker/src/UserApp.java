@@ -61,6 +61,18 @@ public class UserApp {
 		this.password = password;
 	}
 	
+	 /* @param friendsList the friendsList to set
+	 */
+	public void setFriendsList(ArrayList<Friends> friendsList) {
+		this.friendsList = friendsList;
+	}
+	
+	 /* @param sessionsList the sessionsList to set
+	 */
+	public void setSessionsList(ArrayList<Session> sessionList) {
+		this.sessionList = sessionList;
+	}
+	
 	 /* @param deviceList the deviceList to set
 	 */
 	public void setDeviceList(ArrayList<Device> deviceList) {

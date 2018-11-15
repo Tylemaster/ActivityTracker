@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -140,16 +141,9 @@ public class ActivityTracker {
 						userLogData.writeToFile(createProfPass.getText());
 						
 						WriteFile newUserFile = new WriteFile("src/Files/" + createProfName.getText() + ".txt", true);
-						newUserFile.writeToFile("Username");
-						newUserFile.writeToFile(createProfName.getText());
-						newUserFile.writeToFile("Password");
-						newUserFile.writeToFile(createProfPass.getText());
 						newUserFile.writeToFile("Friends");
-						newUserFile.writeToFile("");
 						newUserFile.writeToFile("Sessions");
-						newUserFile.writeToFile("");
 						newUserFile.writeToFile("Device");
-						newUserFile.writeToFile("");
 						
 						currentUser = new UserApp(createProfName.getText(), createProfPass.getText());
 					}
@@ -225,30 +219,74 @@ public class ActivityTracker {
 				 * If it does match, user is valid, and taken to homescreen. The Statistics, Friends, and Devices panels must also be redrawn, with the information from
 				 * this user. (possibly add log in method)
 				 */
-				File currentFile = new File("src/Files/username.txt");
-				Scanner textScan;
-				try {
-					textScan = new Scanner(currentFile);
-					while(textScan.hasNextLine()){
-						String str = textScan.nextLine();
-						if(str.indexOf(logInName.getText()) != -1){
-							if(textScan.nextLine().equals(logInPass.getText())){
-								card.show(mainPanel, "Home");
-								//set user to user fileNam
+				if(!(logInName.getText().equals("")) && !(logInPass.getText().equals(""))) {
+					File currentFile = new File("src/Files/username.txt");
+					Scanner textScan;
+					try {
+						textScan = new Scanner(currentFile);
+						while(textScan.hasNextLine()){
+							String str = textScan.nextLine();
+							if(str.indexOf(logInName.getText()) != -1){
+								if(textScan.nextLine().equals(logInPass.getText())){
+									card.show(mainPanel, "Home");
+									
+									
+									
+									//Here is where we will read the users file to get the information for each user
+									Scanner userRead = new Scanner(new File("src/Files/"+ logInName.getText() + ".txt"));
+									userRead.nextLine();
+									ArrayList<Friends> tempFriendList = null;
+									ArrayList<Session> tempSessionList = null;
+									ArrayList<Device> tempDeviceList = null;
+									while(userRead.hasNextLine()) {
+										if(userRead.nextLine().equals("Sessions")) {
+											break;
+										}
+										else {
+											//Here we will have to add a way to read each piece of information in the text file for each friend, and make a friend object
+											Friends tempFriend = null;
+											tempFriendList.add(tempFriend);
+										}
+									}
+									while(userRead.hasNextLine()) {
+										if(userRead.nextLine().equals("Device")) {
+											break;
+										}
+										else {
+											//Here we will have to add a way to read each piece of information in the text file pertaining to each session, and make a session object
+											Session tempSession = null;
+											tempSessionList.add(tempSession);
+										}
+									}
+									while(userRead.hasNextLine()) {
+										//Here we will have to add a way to read each piece of information in the text file pertaining to each device, and make a device object
+										Device tempDevice = null;
+										tempDeviceList.add(tempDevice);
+									}
+									
+									//Initializing the current user with the info we've parsed
+									currentUser = new UserApp(logInName.getText(), logInPass.getText());
+									currentUser.setFriendsList(tempFriendList);
+									currentUser.setSessionsList(tempSessionList);
+									currentUser.setDeviceList(tempDeviceList);
+								}
 							}
+							else{
+									card.show(mainPanel, "Inval Login");
+							}
+						
 						}
-						else{
-								card.show(mainPanel, "Error");
-								/*currentUser set to null
-								 */
-						}
-					
+							textScan.close();
 					}
-					textScan.close();
-				} catch (FileNotFoundException e1) {
+					catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}	
+					}	
+				}
+				else {
+					card.show(mainPanel, "Inval Login");
+				}
+
 
 			}
 		});
