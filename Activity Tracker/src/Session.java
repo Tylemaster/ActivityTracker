@@ -2,27 +2,23 @@ import java.util.ArrayList;
 
 public class Session{
 		
-		private float calories;
-		private float heartRate;
-		private float dehydration;
-		private String date;
-		/**
-		 * @param calories
-		 * @param heartRate
-		 * @param dehydration
-		 * @param date
-		 */
-		public Session(float calories, float heartRate, float dehydration, String date) {
-			this.calories = calories;
-			this.heartRate = heartRate;
-			this.dehydration = dehydration;
-			this.date = date;
-		}
-		
-		//this method will take in all the changed data that the user gives and update the current session
-		private void updateSession(float calories, float heartRate, float dehydration, String date) {
-			
-		}
-		
-		
+	private ArrayList<Float> time;
+	private ArrayList<Float> distance;
+	private ArrayList<Float> altitude;
+	//private String date;
+
+	
+	public Session(ArrayList<Float> Time, ArrayList<Float> distance, ArrayList<Float> altitude) {
+		this.time = Time;
+		this.distance = distance;
+		this.altitude = altitude;
+		//this.date = date;
 	}
+	
+	//this method will take in all the changed data that the user gives and update the current session
+	private void updateSession(ArrayList<Float> time, ArrayList<Float> distance, ArrayList<Float> altitude, String date) {
+	
+	}
+}
+		
+	//this method will take in all the changed data that the user gives and update the current session

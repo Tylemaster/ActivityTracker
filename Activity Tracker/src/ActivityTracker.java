@@ -226,7 +226,7 @@ public class ActivityTracker {
 						textScan = new Scanner(currentFile);
 						while(textScan.hasNextLine()){
 							String str = textScan.nextLine();
-							if(str.indexOf(logInName.getText()) != -1){
+							if(str.equals(logInName.getText())){
 								if(textScan.nextLine().equals(logInPass.getText())){
 									card.show(mainPanel, "Home");
 									
@@ -269,6 +269,7 @@ public class ActivityTracker {
 									currentUser.setFriendsList(tempFriendList);
 									currentUser.setSessionsList(tempSessionList);
 									currentUser.setDeviceList(tempDeviceList);
+									break;
 								}
 							}
 							else{
@@ -656,4 +657,26 @@ public class ActivityTracker {
 		
 
 	}
+	public Session readSessions(Scanner fileToRead){
+		ArrayList<Float> tempTimeList= null;
+		ArrayList<Float> tempDistanceList = null;
+		ArrayList<Float> tempAltitudeList = null; 
+		Session tempSession;
+		String strToRead;
+		String[] strToAssign;
+		//edit this while loop to continue until end of file or until a different datamarker is reached (sessions2, friends, etc.)
+		while(fileToRead.hasNextLine()){
+			strToRead = fileToRead.nextLine();
+			strToAssign = strToRead.split("(,)");
+			tempTimeList.add(Float.parseFloat(strToAssign[0]));
+			tempDistanceList.add(Float.parseFloat(strToAssign[1]));
+			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+		}
+		tempSession = new Session(tempTimeList, tempDistanceList, tempAltitudeList);
+		return tempSession;
+	}
 }
+
+
+
+
