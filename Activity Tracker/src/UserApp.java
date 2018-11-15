@@ -27,13 +27,12 @@ public class UserApp {
 	 * @param sessionList
 	 * @param deviceList
 	 */
-	public UserApp(String fullName, String password, ArrayList<Friends> friendsList,
-			ArrayList<Session> sessionList, ArrayList<Device> deviceList) {
+	public UserApp(String fullName, String password) {
 		this.fullName = fullName;
 		this.password = password;
-		this.friendsList = friendsList;
-		this.sessionList = sessionList;
-		this.deviceList = deviceList;
+		friendsList = new ArrayList<Friends>();
+		sessionList = new ArrayList<Session>();
+		deviceList = new ArrayList<Device>();
 	}
 
 	/**

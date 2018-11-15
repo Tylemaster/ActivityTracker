@@ -23,6 +23,11 @@ import java.awt.FlowLayout;
 import javax.swing.JList;
 import javax.swing.Box;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+
 public class ActivityTracker {
 
 	private JFrame frmActivityTracker;
@@ -33,6 +38,7 @@ public class ActivityTracker {
 	private JTextField newDeviceName;
 	private JTable ActivityTable;
 	private JTable table;
+	private UserApp currentUser;
 
 	/**
 	 * Launch the application.
@@ -127,10 +133,41 @@ public class ActivityTracker {
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*If statement will have to be added here if the username or password is invalid, take them to invalid page, otherwise to the home screen
-				 *if not invalid, user will be created with the entered createProfName and createProfPass variables and added to the external storage 
-				 */
-				card.show(mainPanel, "Home");
+				if(!(createProfName.getText().equals("")) && !(createProfPass.getText().equals(""))) {
+					WriteFile userLogData = new WriteFile("src/Files/username.txt", true);
+					try{
+						userLogData.writeToFile(createProfName.getText());
+						userLogData.writeToFile(createProfPass.getText());
+						
+						WriteFile newUserFile = new WriteFile("src/Files/" + createProfName.getText() + ".txt", true);
+						newUserFile.writeToFile("Username");
+						newUserFile.writeToFile(createProfName.getText());
+						newUserFile.writeToFile("Password");
+						newUserFile.writeToFile(createProfPass.getText());
+						newUserFile.writeToFile("Friends");
+						newUserFile.writeToFile("");
+						newUserFile.writeToFile("Sessions");
+						newUserFile.writeToFile("");
+						newUserFile.writeToFile("Device");
+						newUserFile.writeToFile("");
+						
+						currentUser = new UserApp(createProfName.getText(), createProfPass.getText());
+					}
+					catch(IOException err){
+						card.show(mainPanel, "Invalid Create");
+					}
+
+
+					
+					/*If statement will have to be added here if the username or password is invalid, take them to invalid page, otherwise to the home screen
+					 *if not invalid, user will be created with the entered createProfName and createProfPass variables and added to the external storage 
+					 */
+					card.show(mainPanel, "Home");
+				}
+				else {
+					card.show(mainPanel, "Invalid Create");
+				}
+
 			}
 		});
 		btnCreate.setBounds(397, 227, 89, 23);
@@ -188,23 +225,31 @@ public class ActivityTracker {
 				 * If it does match, user is valid, and taken to homescreen. The Statistics, Friends, and Devices panels must also be redrawn, with the information from
 				 * this user. (possibly add log in method)
 				 */
-				Scanner textScan = new Scanner(new File("username.txt>"));	
-				while(textScan.hasNextLine()){
-					String str = textScan.nextLine();
-					if(str.indexOf(logInName.getText()) != -1){
-						if(textScan.nextLine() == logInPass.getText()){
-							card.show(mainPanel, "Home");
-							/*currentUser set to logInName.getText()
-							 */
+				File currentFile = new File("src/Files/username.txt");
+				Scanner textScan;
+				try {
+					textScan = new Scanner(currentFile);
+					while(textScan.hasNextLine()){
+						String str = textScan.nextLine();
+						if(str.indexOf(logInName.getText()) != -1){
+							if(textScan.nextLine().equals(logInPass.getText())){
+								card.show(mainPanel, "Home");
+								//set user to user fileNam
+							}
 						}
-					}
-				}
 						else{
-							card.show(mainPanel, "Error");
-							/*currentUser set to null
-							 */
-				}
-				
+								card.show(mainPanel, "Error");
+								/*currentUser set to null
+								 */
+						}
+					
+					}
+					textScan.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+
 			}
 		});
 		btnLogIn_1.setBounds(400, 227, 89, 23);
