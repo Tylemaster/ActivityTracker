@@ -1,0 +1,14 @@
+CS 2005 Nov. 15 - Second Iteration
+For the second iteration we decided to implement the use case View Data, in order to be able to
+read in and store a user's data and display it in a graph. We will be implementing statistics using the data
+in the next iteration, for now we are only interested in enabling a user to easily look through their data.
+Assuming the user has already logged in, the use case View Data involves a user selecting the Statistics
+option under their profile, choosing an activity, and then selecting a date to bring up a particular session.
+The application will then display the duration of the session, the distance covered (if, for example,
+running was the activity selected), and the altitude.
+For our implementation of View Data, some of the challenges we faced were how to read in
+data from a text file and store it in a way our application could use. The data was given to us in 30
+second increments, so we decided to break up the time data, distance data, and altitude data into
+separate lists, where each index of the list would represent a 30 second mark. Another challenge was
+how to actually display the data once it was stored, and for this we decided to use the JTable class. Once
+the data is read in, JTable will display each index of each list as a point on the graph.
