@@ -698,6 +698,11 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
+	public String updateComboBox(UserApp currentUser){
+		for (Session curUser: currentUser.getSessionList()){
+			DateCombo.add(curUser.getDate());
+		}
+	}
 	
 }
 
