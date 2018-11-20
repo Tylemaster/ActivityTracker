@@ -661,11 +661,18 @@ public class ActivityTracker {
 		
 
 	}
-	public Session readSessions(Scanner fileToRead){
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		String reportDate = df.format(today);
-		
+	public Session readSessions(Scanner fileToRead, String date){
+		String reportDate;
+		//if date is given (as it should be when reading from user file), then the date passed to the returned function will be that
+		//if this data is being rerad from a text file however, a timestamp is made and assigned to the session
+		if(date.equals("")){
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			Date today = Calendar.getInstance().getTime();
+			reportDate = df.format(today);
+		}
+		else{
+			reportDate = date;
+		}
 
 		ArrayList<Float> tempTimeList= null;
 		ArrayList<Float> tempDistanceList = null;
@@ -673,13 +680,19 @@ public class ActivityTracker {
 		Session tempSession;
 		String strToRead;
 		String[] strToAssign;
-		//edit this while loop to continue until end of file or until a different datamarker is reached (sessions2, friends, etc.)
 		while(fileToRead.hasNextLine()){
 			strToRead = fileToRead.nextLine();
-			strToAssign = strToRead.split("(,)");
-			tempTimeList.add(Float.parseFloat(strToAssign[0]));
-			tempDistanceList.add(Float.parseFloat(strToAssign[1]));
-			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+			//If the next string is in the proper format, read it for data, otherwise finish loop
+			if(strToRead.charAt(0) == '('){
+				strToAssign = strToRead.split("(,)");
+				tempTimeList.add(Float.parseFloat(strToAssign[0]));
+				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
+				tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+			}
+			else{
+				break;
+			}
+
 		}
 		tempSession = new Session(reportDate, tempTimeList, tempDistanceList, tempAltitudeList);
 		return tempSession;
