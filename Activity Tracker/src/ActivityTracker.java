@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -27,6 +29,8 @@ import javax.swing.Box;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 
 public class ActivityTracker {
@@ -485,7 +489,7 @@ public class ActivityTracker {
 		
 		
 		//Activity table will pull from the currently selected session of the current user and display
-		String [] datColumns = {"Stat", "1Km", "2Km", "Total"};
+		String [] datColumns = {"Time", "Distance", "Altitude"};
 		Object[][] data = {{"Calories", new Integer(30), new Integer(62), new Integer(92)},{"Heart Rate", "100 bpm", "112 bpm", "106 bpm"}, {"Ave. Speed", "6 km/h", "10 km/h", "8 km/h"}, {"Dehydration", "10ml", "12ml", "22ml"}, {"Cum. Distance", "1km", "2km", "2km"}};
 		ActivityTable = new JTable(data, datColumns);
 		ActivityTable.setFillsViewportHeight(true);
@@ -658,6 +662,11 @@ public class ActivityTracker {
 
 	}
 	public Session readSessions(Scanner fileToRead){
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		String reportDate = df.format(today);
+		
+
 		ArrayList<Float> tempTimeList= null;
 		ArrayList<Float> tempDistanceList = null;
 		ArrayList<Float> tempAltitudeList = null; 
@@ -672,9 +681,11 @@ public class ActivityTracker {
 			tempDistanceList.add(Float.parseFloat(strToAssign[1]));
 			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
 		}
-		tempSession = new Session(tempTimeList, tempDistanceList, tempAltitudeList);
+		tempSession = new Session(reportDate, tempTimeList, tempDistanceList, tempAltitudeList);
 		return tempSession;
 	}
+	
+	
 }
 
 
