@@ -90,11 +90,19 @@ public class UserApp {
 	
 	 /* @param deviceList the deviceList to set
 	 */
+	
+	
 	public void setDeviceList(ArrayList<Device> deviceList) {
 		this.deviceList = deviceList;
 	}
 	
 	
+	/**
+	 * @return the sessionList
+	 */
+	public ArrayList<Session> getSessionList() {
+		return sessionList;
+	}
 	//This method send a request to a new friend
 	public void sendRequest(){
 		

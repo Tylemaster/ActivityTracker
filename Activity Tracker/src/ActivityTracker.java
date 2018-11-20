@@ -275,6 +275,13 @@ public class ActivityTracker {
 		comboBox.setBounds(381, 93, 110, 20);
 		ImportData.add(comboBox);
 		
+//		if (name.getName.equals() && password.getPassword.equals()){
+//			j
+//		}
+//		else{
+//			
+//		}
+		
 		//This button will have to read the data being given from the selected device, and add it to/redraw the statistics panel
 		JButton btnImport = new JButton("Import");
 		btnImport.setBounds(183, 92, 89, 23);
@@ -435,5 +442,12 @@ public class ActivityTracker {
 		
 		
 
+	}
+		public String updateComboBox(UserApp currentUser){
+			for (Session curUser: currentUser.getSessionList()){
+				DateCombo.add(curUser.date);
+			}
+		
+		
 	}
 }
