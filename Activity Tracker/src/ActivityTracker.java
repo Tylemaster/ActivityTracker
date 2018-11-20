@@ -656,7 +656,7 @@ public class ActivityTracker {
 		});
 		verticalBox_3.add(btnBack_8);
 		
-		
+
 		
 		
 
@@ -698,9 +698,9 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
-	public String updateComboBox(UserApp currentUser){
+	public void updateComboBox(UserApp currentUser, JComboBox DateCombo){
 		for (Session curUser: currentUser.getSessionList()){
-			DateCombo.add(curUser.getDate());
+			DateCombo.addItem(curUser.getDate());
 		}
 	}
 	

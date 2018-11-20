@@ -24,7 +24,7 @@ public class UserApp {
 	 * @param fullName
 	 * @param password
 	 * @param friendsList
-	 * @param sessionList
+	 * @param sessionList.
 	 * @param deviceList
 	 */
 	public UserApp(String fullName, String password) {
@@ -46,6 +46,10 @@ public class UserApp {
 	 */
 	public String getPassword() {
 		return password;
+	}
+	
+	public ArrayList<Session> getSessionList(){
+		return sessionList;
 	}
 
 	/**
