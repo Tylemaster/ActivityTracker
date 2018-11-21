@@ -661,10 +661,15 @@ public class ActivityTracker {
 		
 
 	}
-	public Session readSessions(Scanner fileToRead, String date){
+	
+	//This is the method that will read in data in CSV form. To be used, the Scanner passed into it must have the NEXT LINE be the FIRST DATA POINT (e.g (0,0,0))
+	//that means that before this method is used, you must parse the file you are reading from to get to the proper start, and then pass the scanner to the method when it is in the aforementioned state
+	//If you are reading from the USER FILE, the date passed in must be the date used as a header for the data in the user file.
+	//If you are importing the data, an empty string "" should be passed in, and the date will be made for this session WITHIN the method.
+	public static Session readSessions(Scanner fileToRead, String date){
 		String reportDate;
 		//if date is given (as it should be when reading from user file), then the date passed to the returned function will be that
-		//if this data is being rerad from a text file however, a timestamp is made and assigned to the session
+		//if this data is being reread from a text file however, a timestamp is made and assigned to the session
 		if(date.equals("")){
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			Date today = Calendar.getInstance().getTime();
@@ -674,9 +679,9 @@ public class ActivityTracker {
 			reportDate = date;
 		}
 
-		ArrayList<Float> tempTimeList= null;
-		ArrayList<Float> tempDistanceList = null;
-		ArrayList<Float> tempAltitudeList = null; 
+		ArrayList<Float> tempTimeList = new ArrayList<Float>();
+		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
+		ArrayList<Float> tempAltitudeList= new ArrayList<Float>(); 
 		Session tempSession;
 		String strToRead;
 		String[] strToAssign;
@@ -684,7 +689,8 @@ public class ActivityTracker {
 			strToRead = fileToRead.nextLine();
 			//If the next string is in the proper format, read it for data, otherwise finish loop
 			if(strToRead.charAt(0) == '('){
-				strToAssign = strToRead.split("(,)");
+				strToRead = strToRead.substring(1, strToRead.length()-1);
+				strToAssign = strToRead.split(",");
 				tempTimeList.add(Float.parseFloat(strToAssign[0]));
 				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
 				tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
