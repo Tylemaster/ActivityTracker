@@ -1,0 +1,7 @@
+CS 2005 Nov 22 - Third Iteration
+For the third iteration we're implementing a new use case that builds upon View Data, viewing Record data. We will be implementing more statistics (average
+speed, average time, etc.) using the data in each Session, and displaying this to the user in a way that they can pick and choose which statistics across which dates they wish to implement.
+Assuming the user has already logged in, the use case View Record Data involves a user selecting the Statistics option under their profile, then
+selecting the view records button. Then the application will display the average duration of the session, the average distance covered, etc.
+For our implementation of View Record Data. Some of the challenges we will face are determining the equations and altering our data in such a way that it will display the records
+the users wish, as well as reading our data from the text file in a way that we can organize that data in viewable form by date and other stats.
