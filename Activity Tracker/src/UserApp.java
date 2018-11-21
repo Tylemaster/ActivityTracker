@@ -30,9 +30,9 @@ public class UserApp {
 	public UserApp(String fullName, String password) {
 		this.fullName = fullName;
 		this.password = password;
-		friendsList = new ArrayList<Friends>();
-		sessionList = new ArrayList<Session>();
-		deviceList = new ArrayList<Device>();
+		this.friendsList = new ArrayList<Friends>();
+		this.sessionList = new ArrayList<Session>();
+		this.deviceList = new ArrayList<Device>();
 	}
 
 	/**
@@ -97,6 +97,10 @@ public class UserApp {
 	//This method enables the user to deny request
 	public void denyRequest(){
 		
+	}
+	
+	public void updateSessionList(Session newSession) {
+		this.sessionList.add(newSession);
 	}
 	
 

@@ -714,6 +714,47 @@ public class ActivityTracker {
 		return DateCombo;
 	}
 	
+/*	public void ImportData(){ 
+		//This block of code will use the readSessions method to GET the session data from the text file
+		Scanner ed = null;
+		try {
+			ed = new Scanner(new File("src/Files/sessionSample.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("No Data File");
+		}
+		Session newSession = readSessions(ed, "");
+		
+		//The current user is updated with the session we just read from the data file
+		currentUser.updateSessionList(newSession);
+		
+		
+		
+		String file = "src/Files/" + currentUser.getFullName() + ".txt";
+		File currentFile = new File(file);
+		Scanner textScan;
+		try {
+			textScan = new Scanner(currentFile);
+			while(textScan.hasNextLine()){
+				String str = textScan.nextLine();
+				if(str.equals("Sessions")){
+					textScan.nextLine();
+					
+					
+					//This while loop doesn't work. the i is not initialized, tempTimeList hasn't been acquired from anywhere. Have to add a loop to ITERATE THROUGH THE newSession ARRAY LISTS
+					while (i < tempTimeList.length){
+						//This method needs to store the data to the file in the (0,0,0) format, as it's given to us, so that we can use the same method to read it from the user file and the import data file
+						file.write(file, "1", "2", "3", StandardCharsets.UTF_8);
+					} 
+				}
+			}
+		}
+		finally {
+			
+		}
+	}*/
+	
 }
 
 

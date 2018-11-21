@@ -31,6 +31,7 @@ public class Session{
 	
 	//this method will take in all the changed data that the user gives and update the current session
 	private void updateSession(ArrayList<Float> time, ArrayList<Float> distance, ArrayList<Float> altitude) {
+		
 	
 	}
 }
