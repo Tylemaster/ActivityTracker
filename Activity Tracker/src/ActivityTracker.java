@@ -93,7 +93,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Log In");
 			}
 		});
-		btnLogIn.setBounds(189, 219, 77, 23);
+		btnLogIn.setBounds(101, 219, 165, 23);
 		Start.add(btnLogIn);
 		
 		JButton btnCreateProfile = new JButton("Create Profile");
@@ -102,7 +102,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Create Profile");
 			}
 		});
-		btnCreateProfile.setBounds(399, 219, 117, 23);
+		btnCreateProfile.setBounds(399, 219, 178, 23);
 		Start.add(btnCreateProfile);
 		
 		JLabel lblActivityTrackerStart = new JLabel("Activity Tracker Start");
@@ -129,7 +129,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Start");
 			}
 		});
-		btnBack.setBounds(201, 227, 89, 23);
+		btnBack.setBounds(130, 227, 160, 23);
 		CreateProfile.add(btnBack);
 		
 		
@@ -168,7 +168,7 @@ public class ActivityTracker {
 
 			}
 		});
-		btnCreate.setBounds(397, 227, 89, 23);
+		btnCreate.setBounds(397, 227, 160, 23);
 		CreateProfile.add(btnCreate);
 		
 		
@@ -176,15 +176,15 @@ public class ActivityTracker {
 		
 		
 		JLabel lblCreateProfilePage = new JLabel("Create Profile");
-		lblCreateProfilePage.setBounds(312, 11, 130, 14);
+		lblCreateProfilePage.setBounds(301, 11, 196, 14);
 		CreateProfile.add(lblCreateProfilePage);
 		
 		JLabel lblName = new JLabel("Name: ");
-		lblName.setBounds(224, 80, 46, 14);
+		lblName.setBounds(170, 80, 100, 14);
 		CreateProfile.add(lblName);
 		
 		JLabel lblPassword = new JLabel("Password: ");
-		lblPassword.setBounds(224, 148, 89, 14);
+		lblPassword.setBounds(170, 148, 143, 14);
 		CreateProfile.add(lblPassword);
 		
 		JPanel LogIn = new JPanel();
@@ -196,11 +196,11 @@ public class ActivityTracker {
 		LogIn.add(lblLogInPage);
 		
 		JLabel lblName_1 = new JLabel("Name: ");
-		lblName_1.setBounds(192, 77, 46, 14);
+		lblName_1.setBounds(192, 77, 145, 14);
 		LogIn.add(lblName_1);
 		
 		JLabel lblPassword_1 = new JLabel("Password:");
-		lblPassword_1.setBounds(192, 142, 89, 14);
+		lblPassword_1.setBounds(192, 142, 145, 14);
 		LogIn.add(lblPassword_1);
 		
 		logInName = new JTextField();
@@ -239,11 +239,14 @@ public class ActivityTracker {
 									//Here is where we will read the users file to get the information for each user
 									Scanner userRead = new Scanner(new File("src/Files/"+ logInName.getText() + ".txt"));
 									userRead.nextLine();
-									ArrayList<Friends> tempFriendList = null;
-									ArrayList<Session> tempSessionList = null;
-									ArrayList<Device> tempDeviceList = null;
+									String toRead;
+									String date;
+									ArrayList<Friends> tempFriendList = new ArrayList<Friends>();
+									ArrayList<Session> tempSessionList = new ArrayList<Session>();
+									ArrayList<Device> tempDeviceList = new ArrayList<Device>();
 									while(userRead.hasNextLine()) {
-										if(userRead.nextLine().equals("Sessions")) {
+										toRead = userRead.nextLine();
+										if(toRead.equals("Sessions")) {
 											break;
 										}
 										else {
@@ -253,12 +256,15 @@ public class ActivityTracker {
 										}
 									}
 									while(userRead.hasNextLine()) {
-										if(userRead.nextLine().equals("Device")) {
+										toRead = userRead.nextLine();
+										if(toRead.equals("Device")) {
 											break;
 										}
 										else {
 											//Here we will have to add a way to read each piece of information in the text file pertaining to each session, and make a session object
-											Session tempSession = null;
+											date = toRead;
+											userRead.nextLine();
+											Session tempSession = readSessions(userRead, date);
 											tempSessionList.add(tempSession);
 										}
 									}
@@ -295,7 +301,7 @@ public class ActivityTracker {
 
 			}
 		});
-		btnLogIn_1.setBounds(400, 227, 89, 23);
+		btnLogIn_1.setBounds(400, 227, 145, 23);
 		LogIn.add(btnLogIn_1);
 		
 		
@@ -307,7 +313,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Start");
 			}
 		});
-		btnBack_1.setBounds(192, 227, 89, 23);
+		btnBack_1.setBounds(109, 227, 172, 23);
 		LogIn.add(btnBack_1);
 		
 		JPanel Home = new JPanel();
@@ -320,7 +326,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Import Data");
 			}
 		});
-		btnImportData.setBounds(103, 152, 113, 23);
+		btnImportData.setBounds(29, 152, 187, 23);
 		Home.add(btnImportData);
 		
 		JButton btnStatistics = new JButton("Statistics");
@@ -329,7 +335,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Statistics");
 			}
 		});
-		btnStatistics.setBounds(477, 152, 113, 23);
+		btnStatistics.setBounds(477, 152, 173, 23);
 		Home.add(btnStatistics);
 		
 		JButton btnFriends = new JButton("Friends");
@@ -338,7 +344,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Friends");
 			}
 		});
-		btnFriends.setBounds(302, 152, 89, 23);
+		btnFriends.setBounds(268, 152, 162, 23);
 		Home.add(btnFriends);
 		
 		JLabel lblHomePage = new JLabel("Home Page");
@@ -350,7 +356,7 @@ public class ActivityTracker {
 		InvalidLogIn.setLayout(null);
 		
 		JLabel lblInvalidUsernameOr = new JLabel("Invalid Username or Password, Please Retry");
-		lblInvalidUsernameOr.setBounds(216, 11, 307, 69);
+		lblInvalidUsernameOr.setBounds(184, 11, 420, 69);
 		InvalidLogIn.add(lblInvalidUsernameOr);
 		
 		JButton btnBack_2 = new JButton("Back");
@@ -359,7 +365,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Log In");
 			}
 		});
-		btnBack_2.setBounds(290, 178, 89, 23);
+		btnBack_2.setBounds(261, 178, 180, 23);
 		InvalidLogIn.add(btnBack_2);
 		
 		JPanel ImportData = new JPanel();
@@ -376,7 +382,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Home");
 			}
 		});
-		btnBack_3.setBounds(183, 227, 89, 23);
+		btnBack_3.setBounds(143, 227, 129, 23);
 		ImportData.add(btnBack_3);
 		
 		JButton btnAddDevice = new JButton("Add Device");
@@ -385,17 +391,23 @@ public class ActivityTracker {
 				card.show(mainPanel, "Add Device");
 			}
 		});
-		btnAddDevice.setBounds(381, 227, 110, 23);
+		btnAddDevice.setBounds(381, 227, 169, 23);
 		ImportData.add(btnAddDevice);
 		
 		//This combo box will hold all devices, will have to be updated when user 1. logs in and 2. adds a device
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(381, 93, 110, 20);
+		comboBox.setBounds(381, 93, 169, 20);
 		ImportData.add(comboBox);
 		
 		//This button will have to read the data being given from the selected device, and add it to/redraw the statistics panel
 		JButton btnImport = new JButton("Import");
-		btnImport.setBounds(183, 92, 89, 23);
+		btnImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+		});
+		btnImport.setBounds(143, 92, 129, 23);
 		ImportData.add(btnImport);
 		
 		JPanel AddDevice = new JPanel();
