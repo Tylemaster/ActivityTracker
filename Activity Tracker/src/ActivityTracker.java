@@ -44,6 +44,7 @@ public class ActivityTracker {
 	private JTable ActivityTable;
 	private JTable table;
 	private UserApp currentUser;
+	public JComboBox DateCombo;
 
 	/**
 	 * Launch the application.
@@ -298,6 +299,7 @@ public class ActivityTracker {
 					card.show(mainPanel, "Inval Login");
 				}
 
+				DateCombo =  updateComboBox(currentUser, DateCombo);
 
 			}
 		});
@@ -403,7 +405,7 @@ public class ActivityTracker {
 		JButton btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				DateCombo =  updateComboBox(currentUser, DateCombo);
 				
 			}
 		});
@@ -457,17 +459,6 @@ public class ActivityTracker {
 		Box verticalBox_1 = Box.createVerticalBox();
 		Options.add(verticalBox_1);
 		
-		Panel upper = new Panel();
-		verticalBox_1.add(upper);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblSelectActivity = new JLabel("Select Activity: ");
-		upper.add(lblSelectActivity);
-		
-		//This combobox will add all activities, and update the sessions combo box and the activity table
-		JComboBox ActivityComboBox = new JComboBox();
-		upper.add(ActivityComboBox);
-		
 		Panel center = new Panel();
 		verticalBox_1.add(center);
 		center.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -476,7 +467,7 @@ public class ActivityTracker {
 		center.add(lblNewLabel_1);
 		
 		//this combobox will hold all the session dates of the currently selected user, changing this will update the table
-		JComboBox DateCombo = new JComboBox();
+		DateCombo = new JComboBox();
 		center.add(DateCombo);
 		
 		Panel lower = new Panel();
@@ -716,10 +707,11 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
-	public void updateComboBox(UserApp currentUser, JComboBox DateCombo){
+	public JComboBox updateComboBox(UserApp currentUser, JComboBox DateCombo){
 		for (Session curUser: currentUser.getSessionList()){
 			DateCombo.addItem(curUser.getDate());
 		}
+		return DateCombo;
 	}
 	
 }
