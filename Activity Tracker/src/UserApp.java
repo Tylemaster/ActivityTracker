@@ -103,5 +103,8 @@ public class UserApp {
 		this.sessionList.add(newSession);
 	}
 	
+	public void updateDeviceList(Device newDevice) {
+		this.deviceList.add(newDevice);
+	}
 
 }

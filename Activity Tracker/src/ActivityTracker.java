@@ -43,6 +43,7 @@ public class ActivityTracker {
 	private JTextField newDeviceName;
 	private JTable ActivityTable;
 	private UserApp currentUser;
+	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -143,12 +144,10 @@ public class ActivityTracker {
 						userLogData.writeToFile(createProfName.getText());
 						userLogData.writeToFile(createProfPass.getText());
 						
-						WriteFile newUserFile = new WriteFile("src/Files/" + createProfName.getText() + ".txt", true);
-						newUserFile.writeToFile("Friends");
-						newUserFile.writeToFile("Device");
-						newUserFile.writeToFile("Sessions");
-
-						
+						WriteFile newUserSessionsFile = new WriteFile("src/Files/" + createProfName.getText() + "Sessions.txt", true);
+						newUserSessionsFile.writeToFile("Sessions");
+						WriteFile newUserDeviceFile = new WriteFile("src/Files/" + createProfName.getText() + "Devices.txt", true);
+						newUserDeviceFile.writeToFile("Devices");
 						currentUser = new UserApp(createProfName.getText(), createProfPass.getText());
 					}
 					catch(IOException err){
@@ -237,43 +236,29 @@ public class ActivityTracker {
 									
 									
 									//Here is where we will read the users file to get the information for each user
-									Scanner userRead = new Scanner(new File("src/Files/"+ logInName.getText() + ".txt"));
-									userRead.nextLine();
+									Scanner userReadSessions = new Scanner(new File("src/Files/"+ logInName.getText() + "Sessions.txt"));
 									String toRead;
 									String date;
-									ArrayList<Friends> tempFriendList = new ArrayList<Friends>();
+									userReadSessions.nextLine();
 									ArrayList<Session> tempSessionList = new ArrayList<Session>();
 									ArrayList<Device> tempDeviceList = new ArrayList<Device>();
-									while(userRead.hasNextLine()) {
-										toRead = userRead.nextLine();
-										if(toRead.equals("Device")) {
-											break;
-										}
-										else {
-											//Here we will have to add a way to read each piece of information in the text file for each friend, and make a friend object
-											Friends tempFriend = null;
-											tempFriendList.add(tempFriend);
-										}
-									}
-									while(userRead.hasNextLine()) {
-										toRead = userRead.nextLine();
-										if(toRead.equals("Sessions")) {
-											break;
-										}
-										else {
-											//Here we will have to add a way to read each piece of information in the text file pertaining to each device, and make a device object
-											Device tempDevice = null;
-											tempDeviceList.add(tempDevice);
-
-										}
-									}
-									while(userRead.hasNextLine()) {
-										toRead = userRead.nextLine();
+									ArrayList<Friends> tempFriendList = new ArrayList<Friends>();
+									while(userReadSessions.hasNextLine()) {
+										toRead = userReadSessions.nextLine();
 										date = toRead;
-										userRead.nextLine();
-										Session tempSession = readSessionsFromUser(userRead, date);
+										userReadSessions.nextLine();
+										Session tempSession = readSessionsFromUser(userReadSessions, date);
 										tempSessionList.add(tempSession);
 
+									}
+									Scanner userReadDevices = new Scanner(new File("src/Files/" + logInName.getText() + "Devices.txt"));
+									userReadDevices.nextLine();
+									String newDeviceName;
+									Device tempDevice;
+									while(userReadDevices.hasNextLine()) {
+										newDeviceName = userReadDevices.nextLine();
+										tempDevice = new Device(newDeviceName);
+										tempDeviceList.add(tempDevice);
 									}
 									
 									//Initializing the current user with the info we've parsed
@@ -399,51 +384,54 @@ public class ActivityTracker {
 				//initializing the scanner to READ DATA file
 				Scanner ed = null;
 				//Try catch because working with files
-				try {
-					//This scanner takes in the SESSION DATA FILE
-					//We'll have to edit this to take in different files, but for now its hardcoded
-					ed = new Scanner(new File("src/Files/sessionSample.txt"));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println("No Data File");
-				}
-				
-				//ReadSession method makes a new SESSION object from the scanner we just made
-				ArrayList<Session> newSessions = readSessionsFromData(ed);
-				
-				for(Session newSession: newSessions){
-					//update CURRENT USER with our NEW SESSION
-					currentUser.updateSessionList(newSession);
-					
-					//Initialize 3 TEMPORARY array lists with the data from the session we just made
-					ArrayList<Float> tempTime = newSession.getTime();
-					ArrayList<Float> tempDist = newSession.getDistance();
-					ArrayList<Float> tempAlt = newSession.getAltitude();
-					
-					//Make a new WriteFile object from the CURRENT USERS FILE
-					WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
-					
-					
+				if(comboBox.getItemCount() != 0){
 					try {
-						//First thing it does is write the NEW SESSIONS DATE to the file
-						userLogData.writeToFile(newSession.getDate());
-						System.out.println(newSession.getDate());
-					} catch (IOException e1) {
+						//This scanner takes in the SESSION DATA FILE
+						//We'll have to edit this to take in different files, but for now its hardcoded
+						ed = new Scanner(new File("src/Files/" + comboBox.getSelectedItem().toString()));
+					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						e.printStackTrace();
+						System.out.println("No Data File");
 					}
-					//for loop iterates through the length of the tempTimeList
-					for(int i = 0; i < newSession.getTime().size(); i++) {
+					
+					//ReadSession method makes a new SESSION object from the scanner we just made
+					ArrayList<Session> newSessions = readSessionsFromData(ed);
+					
+					for(Session newSession: newSessions){
+						//update CURRENT USER with our NEW SESSION
+						currentUser.updateSessionList(newSession);
+						
+						//Initialize 3 TEMPORARY array lists with the data from the session we just made
+						ArrayList<Float> tempTime = newSession.getTime();
+						ArrayList<Float> tempDist = newSession.getDistance();
+						ArrayList<Float> tempAlt = newSession.getAltitude();
+						
+						//Make a new WriteFile object from the CURRENT USERS FILE
+						WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + "Sessions.txt", true);
+						
+						
 						try {
-							//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
-							userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
-						} catch (IOException e) {
+							//First thing it does is write the NEW SESSIONS DATE to the file
+							userLogData.writeToFile(newSession.getDate());
+							System.out.println(newSession.getDate());
+						} catch (IOException e1) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							e1.printStackTrace();
+						}
+						//for loop iterates through the length of the tempTimeList
+						for(int i = 0; i < newSession.getTime().size(); i++) {
+							try {
+								//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
+								userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}
+
 				
 				
 			}
@@ -473,6 +461,18 @@ public class ActivityTracker {
 			public void actionPerformed(ActionEvent e) {
 				//add code here to add device (newDeviceName) to the current user profile, and redraw the import data page with this new device
 				card.show(mainPanel, "Import Data");
+				if(!(newDeviceName.getText().equals(""))) {
+					comboBox.addItem(newDeviceName.getText());
+					Device newDevice = new Device(newDeviceName.getText());
+					currentUser.updateDeviceList(newDevice);
+					WriteFile userDeviceData = new WriteFile("src/Files/" + currentUser.getFullName() + "Devices.txt", true);
+					try {
+						userDeviceData.writeToFile(newDeviceName.getText());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		btnAdd.setBounds(382, 207, 89, 23);
@@ -579,7 +579,6 @@ public class ActivityTracker {
 			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
 			strToRead = fileToRead.nextLine();
 			while(!(strToRead.substring(0,1).equals("0")) && fileToRead.hasNextLine()){
-				System.out.println(strToRead.substring(0,1));
 				strToAssign = strToRead.split(",");
 				tempTimeList.add(Float.parseFloat(strToAssign[0]));
 				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
@@ -628,15 +627,6 @@ public class ActivityTracker {
 		}
 		tempSession = new Session(reportDate, tempTimeList, tempDistanceList, tempAltitudeList);
 		return tempSession;
-	}
-	
-	public void newComboBox(UserApp currentUser, JComboBox DateCombo){
-		for (Session curUser: currentUser.getSessionList()){
-			DateCombo.addItem(curUser.getDate());
-		}
-	}
-	public void newSessionComboBox(Session newSession, JComboBox DateCombo){
-		DateCombo.addItem(newSession.getDate());
 	}
 	
 	
