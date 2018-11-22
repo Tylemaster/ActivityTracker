@@ -424,6 +424,12 @@ public class ActivityTracker {
 				ArrayList<Float> tempAlt = newSession.getAltitude();
 				
 				WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
+				try {
+					userLogData.writeToFile(newSession.getDate());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				for(int i = 0; i< newSession.getTime().size(); i++) {
 					try {
 						userLogData.writeToFile("(" + String.valueOf(tempTime.get(i)) + "," + String.valueOf(tempDist.get(i)) + "," + String.valueOf(tempAlt.get(i)) + ")");
