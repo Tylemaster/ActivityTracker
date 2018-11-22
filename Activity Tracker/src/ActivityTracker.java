@@ -408,8 +408,12 @@ public class ActivityTracker {
 		JButton btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//initializing the scanner to READ DATA file
 				Scanner ed = null;
+				//Try catch because working with files
 				try {
+					//This scanner takes in the SESSION DATA FILE
+					//We'll have to edit this to take in different files, but for now its hardcoded
 					ed = new Scanner(new File("src/Files/sessionSample.txt"));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -417,22 +421,32 @@ public class ActivityTracker {
 					System.out.println("No Data File");
 				}
 				
-				
+				//ReadSession method makes a new SESSION object from the scanner we just made
 				Session newSession = readSessions(ed, "");
+				
+				//update CURRENT USER with our NEW SESSION
 				currentUser.updateSessionList(newSession);
+				
+				//Initialize 3 TEMPORARY array lists with the data from the session we just made
 				ArrayList<Float> tempTime = newSession.getTime();
 				ArrayList<Float> tempDist = newSession.getDistance();
 				ArrayList<Float> tempAlt = newSession.getAltitude();
 				
+				//Make a new WriteFile object from the CURRENT USERS FILE
 				WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
+				
+				
 				try {
+					//First thing it does is write the NEW SESSIONS DATE to the file
 					userLogData.writeToFile(newSession.getDate());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				for(int i = 0; i< newSession.getTime().size(); i++) {
+				//for loop iterates through the length of the tempTimeList
+				for(int i = 0; i < newSession.getTime().size(); i++) {
 					try {
+						//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
 						userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
