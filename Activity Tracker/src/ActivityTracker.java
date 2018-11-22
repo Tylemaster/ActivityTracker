@@ -302,7 +302,7 @@ public class ActivityTracker {
 					card.show(mainPanel, "Inval Login");
 				}
 
-				DateCombo =  updateComboBox(currentUser, DateCombo);
+				newComboBox(currentUser, DateCombo);
 
 			}
 		});
@@ -419,6 +419,7 @@ public class ActivityTracker {
 				
 				
 				Session newSession = readSessions(ed, "");
+				currentUser.updateSessionList(newSession);
 				ArrayList<Float> tempTime = newSession.getTime();
 				ArrayList<Float> tempDist = newSession.getDistance();
 				ArrayList<Float> tempAlt = newSession.getAltitude();
@@ -432,7 +433,7 @@ public class ActivityTracker {
 				}
 				for(int i = 0; i< newSession.getTime().size(); i++) {
 					try {
-						userLogData.writeToFile("(" + String.valueOf(tempTime.get(i)) + "," + String.valueOf(tempDist.get(i)) + "," + String.valueOf(tempAlt.get(i)) + ")");
+						userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -440,7 +441,7 @@ public class ActivityTracker {
 				}
 				
 				
-				DateCombo =  updateComboBox(currentUser, DateCombo);
+				newSessionComboBox(newSession, DateCombo);
 				
 			}
 		});
@@ -742,11 +743,13 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
-	public JComboBox updateComboBox(UserApp currentUser, JComboBox DateCombo){
+	public void newComboBox(UserApp currentUser, JComboBox DateCombo){
 		for (Session curUser: currentUser.getSessionList()){
 			DateCombo.addItem(curUser.getDate());
 		}
-		return DateCombo;
+	}
+	public void newSessionComboBox(Session newSession, JComboBox DateCombo){
+		DateCombo.addItem(newSession.getDate());
 	}
 	
 	
