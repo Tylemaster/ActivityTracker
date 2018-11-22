@@ -273,7 +273,7 @@ public class ActivityTracker {
 										toRead = userRead.nextLine();
 										date = toRead;
 										userRead.nextLine();
-										Session tempSession = readSessions(userRead, date);
+										Session tempSession = readSessionsFromUser(userRead, date);
 										tempSessionList.add(tempSession);
 
 									}
@@ -422,40 +422,42 @@ public class ActivityTracker {
 				}
 				
 				//ReadSession method makes a new SESSION object from the scanner we just made
-				Session newSession = readSessions(ed, "");
+				ArrayList<Session> newSessions = readSessionsFromData(ed);
 				
-				//update CURRENT USER with our NEW SESSION
-				currentUser.updateSessionList(newSession);
-				
-				//Initialize 3 TEMPORARY array lists with the data from the session we just made
-				ArrayList<Float> tempTime = newSession.getTime();
-				ArrayList<Float> tempDist = newSession.getDistance();
-				ArrayList<Float> tempAlt = newSession.getAltitude();
-				
-				//Make a new WriteFile object from the CURRENT USERS FILE
-				WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
-				
-				
-				try {
-					//First thing it does is write the NEW SESSIONS DATE to the file
-					userLogData.writeToFile(newSession.getDate());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				//for loop iterates through the length of the tempTimeList
-				for(int i = 0; i < newSession.getTime().size(); i++) {
+				for(Session newSession: newSessions){
+					//update CURRENT USER with our NEW SESSION
+					currentUser.updateSessionList(newSession);
+					
+					//Initialize 3 TEMPORARY array lists with the data from the session we just made
+					ArrayList<Float> tempTime = newSession.getTime();
+					ArrayList<Float> tempDist = newSession.getDistance();
+					ArrayList<Float> tempAlt = newSession.getAltitude();
+					
+					//Make a new WriteFile object from the CURRENT USERS FILE
+					WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
+					
+					
 					try {
-						//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
-						userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
-					} catch (IOException e) {
+						//First thing it does is write the NEW SESSIONS DATE to the file
+						userLogData.writeToFile(newSession.getDate());
+						System.out.println(newSession.getDate());
+					} catch (IOException e1) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						e1.printStackTrace();
 					}
+					//for loop iterates through the length of the tempTimeList
+					for(int i = 0; i < newSession.getTime().size(); i++) {
+						try {
+							//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
+							userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					newSessionComboBox(newSession, DateCombo);
 				}
 				
-				
-				newSessionComboBox(newSession, DateCombo);
 				
 			}
 		});
@@ -715,22 +717,49 @@ public class ActivityTracker {
 
 	}
 	
+	public static ArrayList<Session> readSessionsFromData(Scanner fileToRead){
+		ArrayList<Float> tempTimeList = new ArrayList<Float>();
+		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
+		ArrayList<Float> tempAltitudeList= new ArrayList<Float>();
+		String tempDate;
+		ArrayList<Session> tempSessions = new ArrayList<Session>();
+		Session tempSession;
+		String strToRead;
+		String[] strToAssign;
+		strToRead = fileToRead.nextLine();
+		while(fileToRead.hasNextLine()){
+			strToAssign = strToRead.split(",");
+			tempDate = strToAssign[3];
+			tempTimeList.add(Float.parseFloat(strToAssign[0]));
+			tempDistanceList.add(Float.parseFloat(strToAssign[1]));
+			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+			strToRead = fileToRead.nextLine();
+			while(!(strToRead.substring(0,1).equals("0")) && fileToRead.hasNextLine()){
+				System.out.println(strToRead.substring(0,1));
+				strToAssign = strToRead.split(",");
+				tempTimeList.add(Float.parseFloat(strToAssign[0]));
+				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
+				tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+				strToRead = fileToRead.nextLine();
+			}
+			
+			tempSession = new Session(tempDate, tempTimeList, tempDistanceList, tempAltitudeList);
+			tempSessions.add(tempSession);
+			tempDate = strToAssign[3];
+			tempTimeList = new ArrayList<Float>();
+			tempDistanceList = new ArrayList<Float>();
+			tempAltitudeList = new ArrayList<Float>();
+		}
+		return tempSessions;
+	}
+	
 	//This is the method that will read in data in CSV form. To be used, the Scanner passed into it must have the NEXT LINE be the FIRST DATA POINT (e.g (0,0,0))
 	//that means that before this method is used, you must parse the file you are reading from to get to the proper start, and then pass the scanner to the method when it is in the aforementioned state
 	//If you are reading from the USER FILE, the date passed in must be the date used as a header for the data in the user file.
 	//If you are importing the data, an empty string "" should be passed in, and the date will be made for this session WITHIN the method.
-	public static Session readSessions(Scanner fileToRead, String date){
-		String reportDate;
-		//if date is given (as it should be when reading from user file), then the date passed to the returned function will be that
-		//if this data is being reread from a text file however, a timestamp is made and assigned to the session
-		if(date.equals("")){
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-			Date today = Calendar.getInstance().getTime();
-			reportDate = df.format(today);
-		}
-		else{
-			reportDate = date;
-		}
+	public static Session readSessionsFromUser(Scanner fileToRead, String date){
+		String reportDate = date;
+
 
 		ArrayList<Float> tempTimeList = new ArrayList<Float>();
 		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
