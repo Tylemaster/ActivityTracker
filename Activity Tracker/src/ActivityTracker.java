@@ -147,8 +147,9 @@ public class ActivityTracker {
 						
 						WriteFile newUserFile = new WriteFile("src/Files/" + createProfName.getText() + ".txt", true);
 						newUserFile.writeToFile("Friends");
-						newUserFile.writeToFile("Sessions");
 						newUserFile.writeToFile("Device");
+						newUserFile.writeToFile("Sessions");
+
 						
 						currentUser = new UserApp(createProfName.getText(), createProfPass.getText());
 					}
@@ -247,7 +248,7 @@ public class ActivityTracker {
 									ArrayList<Device> tempDeviceList = new ArrayList<Device>();
 									while(userRead.hasNextLine()) {
 										toRead = userRead.nextLine();
-										if(toRead.equals("Sessions")) {
+										if(toRead.equals("Device")) {
 											break;
 										}
 										else {
@@ -258,21 +259,23 @@ public class ActivityTracker {
 									}
 									while(userRead.hasNextLine()) {
 										toRead = userRead.nextLine();
-										if(toRead.equals("Device")) {
+										if(toRead.equals("Sessions")) {
 											break;
 										}
 										else {
-											//Here we will have to add a way to read each piece of information in the text file pertaining to each session, and make a session object
-											date = toRead;
-											userRead.nextLine();
-											Session tempSession = readSessions(userRead, date);
-											tempSessionList.add(tempSession);
+											//Here we will have to add a way to read each piece of information in the text file pertaining to each device, and make a device object
+											Device tempDevice = null;
+											tempDeviceList.add(tempDevice);
+
 										}
 									}
 									while(userRead.hasNextLine()) {
-										//Here we will have to add a way to read each piece of information in the text file pertaining to each device, and make a device object
-										Device tempDevice = null;
-										tempDeviceList.add(tempDevice);
+										toRead = userRead.nextLine();
+										date = toRead;
+										userRead.nextLine();
+										Session tempSession = readSessions(userRead, date);
+										tempSessionList.add(tempSession);
+
 									}
 									
 									//Initializing the current user with the info we've parsed
@@ -756,7 +759,7 @@ public class ActivityTracker {
 	}*/
 	
 }
-}
+
 
 
 
