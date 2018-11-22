@@ -44,6 +44,8 @@ public class ActivityTracker {
 	private JTable ActivityTable;
 	private UserApp currentUser;
 	private JComboBox comboBox;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -414,7 +416,6 @@ public class ActivityTracker {
 						try {
 							//First thing it does is write the NEW SESSIONS DATE to the file
 							userLogData.writeToFile(newSession.getDate());
-							System.out.println(newSession.getDate());
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -423,7 +424,7 @@ public class ActivityTracker {
 						for(int i = 0; i < newSession.getTime().size(); i++) {
 							try {
 								//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
-								userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
+								userLogData.writeToFile("(" + String.valueOf(tempTime.get(i)) + "," + String.valueOf(tempDist.get(i)) + "," + String.valueOf(tempAlt.get(i)) + ")");
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -555,6 +556,154 @@ public class ActivityTracker {
 		btnBack_6.setBounds(311, 196, 89, 23);
 		InvalidCreate.add(btnBack_6);
 		
+		JPanel RecordOption = new JPanel();
+		mainPanel.add(RecordOption, "RecordOption");
+		RecordOption.setLayout(null);
+		
+		JButton MonthSort = new JButton("Sort By Month");
+		MonthSort.setBounds(68, 86, 244, 23);
+		RecordOption.add(MonthSort);
+		
+		JButton Day_Sort = new JButton("Sort by Days");
+		Day_Sort.setBounds(357, 86, 270, 23);
+		RecordOption.add(Day_Sort);
+		
+		JButton sortBack = new JButton("Back");
+		sortBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				card.show(mainPanel,  "Statistics");
+			}
+		});
+		sortBack.setBounds(266, 191, 142, 23);
+		RecordOption.add(sortBack);
+		
+		JPanel byMonth = new JPanel();
+		mainPanel.add(byMonth, "byMonth");
+		byMonth.setLayout(null);
+		
+		JComboBox monthCombo = new JComboBox();
+		String[] months = {"1", "2","3","4","5","6","7","8","9","10", "11", "12"};
+		for(int i = 0; i < months.length;i++) {
+			monthCombo.addItem(months[i]);
+		}
+		monthCombo.setBounds(368, 114, 254, 20);
+		byMonth.add(monthCombo);
+		
+		//The get session method Month wise will have to be called here, and then the get records from the group of sessions
+		JButton btnSelectMonth = new JButton("Select Month");
+		btnSelectMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String monthToGet = (String) monthCombo.getSelectedItem();
+				card.show(mainPanel, "Records");
+			}
+		});
+		btnSelectMonth.setBounds(22, 113, 254, 23);
+		byMonth.add(btnSelectMonth);
+		
+		JButton btnBack_5 = new JButton("Back");
+		btnBack_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "RecordOption");
+			}
+		});
+		btnBack_5.setBounds(225, 209, 215, 23);
+		byMonth.add(btnBack_5);
+		
+		JPanel byDate = new JPanel();
+		mainPanel.add(byDate, "byDate");
+		byDate.setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(278, 82, 174, 20);
+		byDate.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(278, 127, 174, 20);
+		byDate.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblSelectDate = new JLabel("Select date 1 (DD-MM)");
+		lblSelectDate.setBounds(59, 85, 209, 14);
+		byDate.add(lblSelectDate);
+		
+		JLabel lblSelectDate_1 = new JLabel("Select Date 2 (DD-MM)");
+		lblSelectDate_1.setBounds(59, 130, 209, 14);
+		byDate.add(lblSelectDate_1);
+		
+		
+		//will have to add method here to parse the two given strings to get the date, and go through user sessions to find dates between these two
+		JButton btnGetRecords = new JButton("Get Records");
+		btnGetRecords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Records");
+			}
+		});
+		btnGetRecords.setBounds(59, 217, 209, 23);
+		byDate.add(btnGetRecords);
+		
+		JButton btnBack_7 = new JButton("Back");
+		btnBack_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "RecordOption");
+			}
+		});
+		btnBack_7.setBounds(363, 218, 209, 23);
+		byDate.add(btnBack_7);
+		
+		JPanel Records = new JPanel();
+		mainPanel.add(Records, "Records");
+		Records.setLayout(null);
+		
+		JLabel lblAverageDistance = new JLabel("Average Distance:");
+		lblAverageDistance.setBounds(10, 11, 217, 14);
+		Records.add(lblAverageDistance);
+		
+		JLabel lblAveragePace = new JLabel("Average Pace:");
+		lblAveragePace.setBounds(10, 36, 217, 14);
+		Records.add(lblAveragePace);
+		
+		JLabel lblCaloriesBurned = new JLabel("Calories Burned:");
+		lblCaloriesBurned.setBounds(10, 61, 217, 14);
+		Records.add(lblCaloriesBurned);
+		
+		JLabel lblAverageAltitudeUp = new JLabel("Average Altitude Up: ");
+		lblAverageAltitudeUp.setBounds(10, 86, 217, 14);
+		Records.add(lblAverageAltitudeUp);
+		
+		JLabel lblAverageAltitudeDown = new JLabel("Average Altitude Down:");
+		lblAverageAltitudeDown.setBounds(10, 111, 217, 14);
+		Records.add(lblAverageAltitudeDown);
+		
+		JLabel lblMetres = new JLabel("metres");
+		lblMetres.setBounds(366, 11, 270, 14);
+		Records.add(lblMetres);
+		
+		JLabel lblSecondmetre = new JLabel("second/metre");
+		lblSecondmetre.setBounds(366, 36, 270, 14);
+		Records.add(lblSecondmetre);
+		
+		JLabel lblCalories = new JLabel("Calories");
+		lblCalories.setBounds(366, 61, 270, 14);
+		Records.add(lblCalories);
+		
+		JLabel lblMetres_1 = new JLabel("Metres");
+		lblMetres_1.setBounds(366, 86, 270, 14);
+		Records.add(lblMetres_1);
+		
+		JLabel lblMetres_2 = new JLabel("Metres");
+		lblMetres_2.setBounds(366, 111, 270, 14);
+		Records.add(lblMetres_2);
+		
+		JButton btnBack_8 = new JButton("Back");
+		btnBack_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "Statistics");
+			}
+		});
+		btnBack_8.setBounds(221, 221, 235, 23);
+		Records.add(btnBack_8);
+		
 
 		
 		
@@ -628,8 +777,6 @@ public class ActivityTracker {
 		tempSession = new Session(reportDate, tempTimeList, tempDistanceList, tempAltitudeList);
 		return tempSession;
 	}
-	
-	
 }
 
 
