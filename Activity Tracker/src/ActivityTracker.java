@@ -504,7 +504,12 @@ public class ActivityTracker {
 		center.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		//this button will change the table so that it can be edited, which will update the sessions
-		JButton btnViewRecords = new JButton("Edit Data");
+		JButton btnViewRecords = new JButton("View Records");
+		btnViewRecords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "RecordOption");
+			}
+		});
 		center.add(btnViewRecords);
 		
 		Panel lower = new Panel();
