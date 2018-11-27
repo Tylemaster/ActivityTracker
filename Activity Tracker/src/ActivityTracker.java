@@ -336,7 +336,7 @@ public class ActivityTracker {
 		InvalidLogIn.setLayout(null);
 		
 		JLabel lblInvalidUsernameOr = new JLabel("Invalid Username or Password, Please Retry");
-		lblInvalidUsernameOr.setBounds(184, 11, 420, 69);
+		lblInvalidUsernameOr.setBounds(212, 11, 420, 69);
 		InvalidLogIn.add(lblInvalidUsernameOr);
 		
 		JButton btnBack_2 = new JButton("Back");
