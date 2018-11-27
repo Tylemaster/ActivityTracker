@@ -47,6 +47,11 @@ public class ActivityTracker {
 	private JComboBox comboBox;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JLabel lblMetres;
+	private JLabel lblSecondmetre;
+	private JLabel lblCalories;
+	private JLabel lblMetres_1;
+	private JLabel lblMetres_2;
 
 	/**
 	 * Launch the application.
@@ -249,6 +254,7 @@ public class ActivityTracker {
 									while(userReadSessions.hasNextLine()) {
 										toRead = userReadSessions.nextLine();
 										date = toRead;
+										System.out.println(date);
 										userReadSessions.nextLine();
 										Session tempSession = readSessionsFromUser(userReadSessions, date);
 										tempSessionList.add(tempSession);
@@ -269,6 +275,8 @@ public class ActivityTracker {
 									currentUser.setFriendsList(tempFriendList);
 									currentUser.setSessionsList(tempSessionList);
 									currentUser.setDeviceList(tempDeviceList);
+									
+									DeviceCombo(comboBox, currentUser);
 									break;
 								}
 							}
@@ -376,7 +384,7 @@ public class ActivityTracker {
 		ImportData.add(btnAddDevice);
 		
 		//This combo box will hold all devices, will have to be updated when user 1. logs in and 2. adds a device
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setBounds(381, 93, 169, 20);
 		ImportData.add(comboBox);
 		
@@ -406,9 +414,9 @@ public class ActivityTracker {
 						currentUser.updateSessionList(newSession);
 						
 						//Initialize 3 TEMPORARY array lists with the data from the session we just made
-						ArrayList<Float> tempTime = newSession.getTime();
-						ArrayList<Float> tempDist = newSession.getDistance();
-						ArrayList<Float> tempAlt = newSession.getAltitude();
+						ArrayList<Double> tempTime = newSession.getTime();
+						ArrayList<Double> tempDist = newSession.getDistance();
+						ArrayList<Double> tempAlt = newSession.getAltitude();
 						
 						//Make a new WriteFile object from the CURRENT USERS FILE
 						WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + "Sessions.txt", true);
@@ -567,10 +575,20 @@ public class ActivityTracker {
 		RecordOption.setLayout(null);
 		
 		JButton MonthSort = new JButton("Sort By Month");
+		MonthSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "byMonth");
+			}
+		});
 		MonthSort.setBounds(68, 86, 244, 23);
 		RecordOption.add(MonthSort);
 		
 		JButton Day_Sort = new JButton("Sort by Days");
+		Day_Sort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(mainPanel, "byDate");
+			}
+		});
 		Day_Sort.setBounds(357, 86, 270, 23);
 		RecordOption.add(Day_Sort);
 		
@@ -600,6 +618,23 @@ public class ActivityTracker {
 		btnSelectMonth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String monthToGet = (String) monthCombo.getSelectedItem();
+				ArrayList<Session> sessionsToRecord = getSessionsFromMonth(currentUser.getSessionList(), monthToGet);
+				
+				double avDist = avgTime(sessionsToRecord);
+				lblMetres.setText(String.valueOf(avDist) + " Metres");
+				
+				double avPace = avgPace(sessionsToRecord);
+				lblSecondmetre.setText(String.valueOf(avPace) + " Metres/Second");
+				
+				double calBurned = avgCaloriesBurned(sessionsToRecord);
+				lblCalories.setText(String.valueOf(calBurned) + " Calories");
+				
+				double altUp = avgAltitudeUp(sessionsToRecord);
+				lblMetres_1.setText(String.valueOf(altUp) + " Metres");
+				
+				double altDown = avgAltitudeDown(sessionsToRecord);
+				lblMetres_2.setText(String.valueOf(altDown) + " Metres");
+				
 				card.show(mainPanel, "Records");
 			}
 		});
@@ -681,23 +716,23 @@ public class ActivityTracker {
 		lblAverageAltitudeDown.setBounds(10, 111, 217, 14);
 		Records.add(lblAverageAltitudeDown);
 		
-		JLabel lblMetres = new JLabel("metres");
+		lblMetres = new JLabel("metres");
 		lblMetres.setBounds(366, 11, 270, 14);
 		Records.add(lblMetres);
 		
-		JLabel lblSecondmetre = new JLabel("second/metre");
+		lblSecondmetre = new JLabel("second/metre");
 		lblSecondmetre.setBounds(366, 36, 270, 14);
 		Records.add(lblSecondmetre);
 		
-		JLabel lblCalories = new JLabel("Calories");
+		lblCalories = new JLabel("Calories");
 		lblCalories.setBounds(366, 61, 270, 14);
 		Records.add(lblCalories);
 		
-		JLabel lblMetres_1 = new JLabel("Metres");
+		lblMetres_1 = new JLabel("Metres");
 		lblMetres_1.setBounds(366, 86, 270, 14);
 		Records.add(lblMetres_1);
 		
-		JLabel lblMetres_2 = new JLabel("Metres");
+		lblMetres_2 = new JLabel("Metres");
 		lblMetres_2.setBounds(366, 111, 270, 14);
 		Records.add(lblMetres_2);
 		
@@ -717,10 +752,13 @@ public class ActivityTracker {
 	}
 	
 	public ArrayList<Session> getSessionsFromMonth(ArrayList<Session> allSessions, String month){
-		ArrayList<Session> sessionsInRange = null;
+		ArrayList<Session> sessionsInRange = new ArrayList<Session>();
 		String[] thisDate;
 		for(Session curSession:allSessions){
 			thisDate = curSession.getDate().split("-");
+			for(String test:thisDate){
+				System.out.println(test);
+			}
 			if(thisDate[1].equals(month)){
 				sessionsInRange.add(curSession);
 			}
@@ -729,7 +767,7 @@ public class ActivityTracker {
 	}
 	
 	public ArrayList<Session> getSessionsFromDays(ArrayList<Session> allSessions, String firstDate, String secondDate) throws ParseException{
-		ArrayList<Session> sessionsInRange = null;
+		ArrayList<Session> sessionsInRange = new ArrayList<Session>();
 		DateFormat sdf= new SimpleDateFormat("dd-mm-yyyy");
 		Date beforeDate = sdf.parse(firstDate);
 		Date afterDate = sdf.parse(secondDate);
@@ -750,9 +788,9 @@ public class ActivityTracker {
 	}
 	
 	public static ArrayList<Session> readSessionsFromData(Scanner fileToRead){
-		ArrayList<Float> tempTimeList = new ArrayList<Float>();
-		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
-		ArrayList<Float> tempAltitudeList= new ArrayList<Float>();
+		ArrayList<Double> tempTimeList = new ArrayList<Double>();
+		ArrayList<Double> tempDistanceList= new ArrayList<Double>();
+		ArrayList<Double> tempAltitudeList= new ArrayList<Double>();
 		String tempDate;
 		ArrayList<Session> tempSessions = new ArrayList<Session>();
 		Session tempSession;
@@ -762,24 +800,24 @@ public class ActivityTracker {
 		while(fileToRead.hasNextLine()){
 			strToAssign = strToRead.split(",");
 			tempDate = strToAssign[3];
-			tempTimeList.add(Float.parseFloat(strToAssign[0]));
-			tempDistanceList.add(Float.parseFloat(strToAssign[1]));
-			tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+			tempTimeList.add(Double.parseDouble(strToAssign[0]));
+			tempDistanceList.add(Double.parseDouble(strToAssign[1]));
+			tempAltitudeList.add(Double.parseDouble(strToAssign[2]));
 			strToRead = fileToRead.nextLine();
 			while(!(strToRead.substring(0,1).equals("0")) && fileToRead.hasNextLine()){
 				strToAssign = strToRead.split(",");
-				tempTimeList.add(Float.parseFloat(strToAssign[0]));
-				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
-				tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+				tempTimeList.add(Double.parseDouble(strToAssign[0]));
+				tempDistanceList.add(Double.parseDouble(strToAssign[1]));
+				tempAltitudeList.add(Double.parseDouble(strToAssign[2]));
 				strToRead = fileToRead.nextLine();
 			}
 			
 			tempSession = new Session(tempDate, tempTimeList, tempDistanceList, tempAltitudeList);
 			tempSessions.add(tempSession);
 			tempDate = strToAssign[3];
-			tempTimeList = new ArrayList<Float>();
-			tempDistanceList = new ArrayList<Float>();
-			tempAltitudeList = new ArrayList<Float>();
+			tempTimeList = new ArrayList<Double>();
+			tempDistanceList = new ArrayList<Double>();
+			tempAltitudeList = new ArrayList<Double>();
 		}
 		return tempSessions;
 	}
@@ -792,21 +830,21 @@ public class ActivityTracker {
 		String reportDate = date;
 
 
-		ArrayList<Float> tempTimeList = new ArrayList<Float>();
-		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
-		ArrayList<Float> tempAltitudeList= new ArrayList<Float>(); 
+		ArrayList<Double> tempTimeList = new ArrayList<Double>();
+		ArrayList<Double> tempDistanceList= new ArrayList<Double>();
+		ArrayList<Double> tempAltitudeList= new ArrayList<Double>(); 
 		Session tempSession;
 		String strToRead;
 		String[] strToAssign;
 		while(fileToRead.hasNextLine()){
 			strToRead = fileToRead.nextLine();
 			//If the next string is in the proper format, read it for data, otherwise finish loop
-			if(strToRead.charAt(0) == '('){
+			if(!(strToRead.charAt(0) == 'e')){
 				strToRead = strToRead.substring(1, strToRead.length()-1);
 				strToAssign = strToRead.split(",");
-				tempTimeList.add(Float.parseFloat(strToAssign[0]));
-				tempDistanceList.add(Float.parseFloat(strToAssign[1]));
-				tempAltitudeList.add(Float.parseFloat(strToAssign[2]));
+				tempTimeList.add(Double.parseDouble(strToAssign[0]));
+				tempDistanceList.add(Double.parseDouble(strToAssign[1]));
+				tempAltitudeList.add(Double.parseDouble(strToAssign[2]));
 			}
 			else{
 				break;
@@ -823,8 +861,19 @@ public class ActivityTracker {
 		
 		for(Session thisSession : currentUser.getSessionList()){
 			thisDate = (thisSession.getDate().split("-"))[1];
-			dayBox.addItem(thisDate);
+			if(!(datesAlready.contains(thisDate))){
+				dayBox.addItem(thisDate);
+				datesAlready.add(thisDate);
+			}
 		}
+	}
+	
+	public void DeviceCombo(JComboBox deviceBox, UserApp currentUser){
+		String thisDevice;
+		for(Device currentDevice: currentUser.getDeviceList()){
+			deviceBox.addItem(currentDevice.getDate());
+		}
+		
 	}
 	
 	public double avgTime(ArrayList<Session> listOfSessions){
@@ -838,7 +887,6 @@ public class ActivityTracker {
 		}
 		//int totalTimes = times[1]+times[2] + ... times[n]
 		double avgTime = (totalTimes / listOfSessions.size());
-		avgTime = (avgTime / 60);
 		return avgTime;
 		}
 		
@@ -853,7 +901,6 @@ public class ActivityTracker {
 		    }
 		//int totalDistances = distances[1]+distances[2] + ... distances[n]
 			double avgDistance = (totalDistances / listOfSessions.size());
-			avgDistance = (avgDistance / 1000);
 			return avgDistance;
 		}
 		
@@ -884,7 +931,7 @@ public class ActivityTracker {
 			    	totalDistance = (totalDistance + listOfSessions.get(i).getTotalDistance());
 			    	i++;
 			    }
-		    double avgCaloriesBurned = totalDistance * 60;
+		    double avgCaloriesBurned = totalDistance * 0.06;
 		    return avgCaloriesBurned;
 		}
 		
