@@ -302,7 +302,7 @@ public class ActivityTracker {
 					card.show(mainPanel, "Inval Login");
 				}
 
-				newComboBox(currentUser, DateCombo);
+				DateCombo =  updateComboBox(currentUser, DateCombo);
 
 			}
 		});
@@ -408,12 +408,8 @@ public class ActivityTracker {
 		JButton btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//initializing the scanner to READ DATA file
 				Scanner ed = null;
-				//Try catch because working with files
 				try {
-					//This scanner takes in the SESSION DATA FILE
-					//We'll have to edit this to take in different files, but for now its hardcoded
 					ed = new Scanner(new File("src/Files/sessionSample.txt"));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -421,33 +417,22 @@ public class ActivityTracker {
 					System.out.println("No Data File");
 				}
 				
-				//ReadSession method makes a new SESSION object from the scanner we just made
+				
 				Session newSession = readSessions(ed, "");
-				
-				//update CURRENT USER with our NEW SESSION
-				currentUser.updateSessionList(newSession);
-				
-				//Initialize 3 TEMPORARY array lists with the data from the session we just made
 				ArrayList<Float> tempTime = newSession.getTime();
 				ArrayList<Float> tempDist = newSession.getDistance();
 				ArrayList<Float> tempAlt = newSession.getAltitude();
 				
-				//Make a new WriteFile object from the CURRENT USERS FILE
 				WriteFile userLogData = new WriteFile("src/Files/" + currentUser.getFullName() + ".txt", true);
-				
-				
 				try {
-					//First thing it does is write the NEW SESSIONS DATE to the file
 					userLogData.writeToFile(newSession.getDate());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				//for loop iterates through the length of the tempTimeList
-				for(int i = 0; i < newSession.getTime().size(); i++) {
+				for(int i = 0; i< newSession.getTime().size(); i++) {
 					try {
-						//writes the DATA from SESSION OBJECT to the USER FILE, LINE BY LINE
-						userLogData.writeToFile("(" + String.valueOf(Math.round(tempTime.get(i))) + "," + String.valueOf(Math.round(tempDist.get(i))) + "," + String.valueOf(Math.round(tempAlt.get(i))) + ")");
+						userLogData.writeToFile("(" + String.valueOf(tempTime.get(i)) + "," + String.valueOf(tempDist.get(i)) + "," + String.valueOf(tempAlt.get(i)) + ")");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -455,7 +440,7 @@ public class ActivityTracker {
 				}
 				
 				
-				newSessionComboBox(newSession, DateCombo);
+				DateCombo =  updateComboBox(currentUser, DateCombo);
 				
 			}
 		});
@@ -757,16 +742,31 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
-	public void newComboBox(UserApp currentUser, JComboBox DateCombo){
+	public JComboBox updateComboBox(UserApp currentUser, JComboBox DateCombo){
 		for (Session curUser: currentUser.getSessionList()){
 			DateCombo.addItem(curUser.getDate());
 		}
-	}
-	public void newSessionComboBox(Session newSession, JComboBox DateCombo){
-		DateCombo.addItem(newSession.getDate());
+		return DateCombo;
 	}
 	
-	
+	public avgTime(listOfSessions){
+	//iterate through list of sessions
+	//int times.add(listOfSessions[i].getTotalTime)
+	//int totalTimes = times[1]+times[2] + ... times[n]
+	//int avgTime = totalTimes / times.length
+	}
+	public avgDistance(listOfSessions){
+		//iterate through list of sessions
+		//int distances.add(listOfSessions[i].getTotalDistance)
+		//int totalDistances = distances[1]+distances[2] + ... distances[n]
+		//int avgDistance = totalDistances / distances.length	
+	}
+	public avgPace(listOfSessions){
+	//distance / time	
+	}
+	public avgCaloriesBurned(listOfSessions){
+	//average = 60 calories per km	
+	}
 }
 
 
