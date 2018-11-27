@@ -10,10 +10,10 @@ public class Device {
 		this.name = name;
 	}
 	
-	//This method will get data from the device selected and stores it the user session
-	public void importData(){
-		
+	public String getDate(){
+		return name;
 	}
+	
 	
 
 }
