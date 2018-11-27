@@ -847,6 +847,11 @@ public class ActivityTracker {
 		
 
 	}
+	
+	//public void populateTable(UserApp currentUser, JTable table) {
+		//String [] datColumns = {"Time", "Distance", "Altitude"};
+		//Object[][] data = {{"Calories", new Integer(30), new Integer(62), new Integer(92)}
+	//}
 	//this method will take in a list of sessions and return all the sessions that have the given month
 	public ArrayList<Session> getSessionsFromMonth(ArrayList<Session> allSessions, String month){
 		ArrayList<Session> sessionsInRange = new ArrayList<Session>();
