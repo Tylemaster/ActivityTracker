@@ -958,6 +958,29 @@ public class ActivityTracker {
 		    avgDownAlt = (totalDownAlt / listOfSessions.size());
 		    return avgDownAlt;
 		}
+	
+		public ArrayList<Session> currentUserSession(String month, ArrayList<Session> myCurrentUserSessionList){
+		
+			String myDate;
+			Session thisCurrentSession;
+		
+			ArrayList<Session> listOfSession = new ArrayList<Session>();
+		
+			for(int i = 0; i< myCurrentUserSessionList.size(); i++){
+			
+				thisCurrentSession = myCurrentUserSessionList.get(i);
+				myDate = thisCurrentSession.getDate();
+
+				String[] obtainedMonth = myDate.split("-");
+
+				if (obtainedMonth[1] == month){
+					listOfSession.add(thisCurrentSession);
+				}
+			
+		}
+		return listOfSession;
+		
+	}
 }
 
 
