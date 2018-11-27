@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -45,13 +46,13 @@ public class ActivityTracker {
 	private JTable ActivityTable;
 	private UserApp currentUser;
 	private JComboBox comboBox;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JLabel lblMetres;
 	private JLabel lblSecondmetre;
 	private JLabel lblCalories;
 	private JLabel lblMetres_1;
 	private JLabel lblMetres_2;
+	private JComboBox beforeBox;
+	private JComboBox afterBox;
 
 	/**
 	 * Launch the application.
@@ -82,7 +83,7 @@ public class ActivityTracker {
 	private void initialize() {
 		frmActivityTracker = new JFrame();
 		frmActivityTracker.setTitle("Activity Tracker");
-		frmActivityTracker.setBounds(100, 100, 700, 350);
+		frmActivityTracker.setBounds(100, 100, 721, 350);
 		frmActivityTracker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel mainPanel = new JPanel();
@@ -254,7 +255,6 @@ public class ActivityTracker {
 									while(userReadSessions.hasNextLine()) {
 										toRead = userReadSessions.nextLine();
 										date = toRead;
-										System.out.println(date);
 										userReadSessions.nextLine();
 										Session tempSession = readSessionsFromUser(userReadSessions, date);
 										tempSessionList.add(tempSession);
@@ -277,6 +277,8 @@ public class ActivityTracker {
 									currentUser.setDeviceList(tempDeviceList);
 									
 									DeviceCombo(comboBox, currentUser);
+									DateDayCombo(beforeBox,currentUser);
+									DateDayCombo(afterBox,currentUser);
 									break;
 								}
 							}
@@ -371,7 +373,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Home");
 			}
 		});
-		btnBack_3.setBounds(143, 227, 129, 23);
+		btnBack_3.setBounds(143, 227, 169, 23);
 		ImportData.add(btnBack_3);
 		
 		JButton btnAddDevice = new JButton("Add Device");
@@ -439,6 +441,12 @@ public class ActivityTracker {
 								e.printStackTrace();
 							}
 						}
+						try {
+							userLogData.writeToFile("e");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 
@@ -446,7 +454,7 @@ public class ActivityTracker {
 				
 			}
 		});
-		btnImport.setBounds(143, 92, 129, 23);
+		btnImport.setBounds(143, 92, 169, 23);
 		ImportData.add(btnImport);
 		
 		JPanel AddDevice = new JPanel();
@@ -454,11 +462,11 @@ public class ActivityTracker {
 		AddDevice.setLayout(null);
 		
 		JLabel lblAddDevice = new JLabel("Add Device ");
-		lblAddDevice.setBounds(293, 11, 127, 14);
+		lblAddDevice.setBounds(293, 11, 150, 14);
 		AddDevice.add(lblAddDevice);
 		
 		JLabel lblDeviceName = new JLabel("Device Name: ");
-		lblDeviceName.setBounds(216, 101, 87, 14);
+		lblDeviceName.setBounds(216, 101, 119, 14);
 		AddDevice.add(lblDeviceName);
 		
 		newDeviceName = new JTextField();
@@ -485,7 +493,7 @@ public class ActivityTracker {
 				}
 			}
 		});
-		btnAdd.setBounds(382, 207, 89, 23);
+		btnAdd.setBounds(382, 207, 130, 23);
 		AddDevice.add(btnAdd);
 		
 		JButton btnNewButton = new JButton("Back");
@@ -494,7 +502,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Import Data");
 			}
 		});
-		btnNewButton.setBounds(214, 207, 89, 23);
+		btnNewButton.setBounds(214, 207, 121, 23);
 		AddDevice.add(btnNewButton);
 		
 		JPanel Statisitics = new JPanel();
@@ -567,7 +575,7 @@ public class ActivityTracker {
 				card.show(mainPanel, "Log In");
 			}
 		});
-		btnBack_6.setBounds(311, 196, 89, 23);
+		btnBack_6.setBounds(269, 197, 151, 23);
 		InvalidCreate.add(btnBack_6);
 		
 		JPanel RecordOption = new JPanel();
@@ -617,23 +625,25 @@ public class ActivityTracker {
 		JButton btnSelectMonth = new JButton("Select Month");
 		btnSelectMonth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				DecimalFormat df = new DecimalFormat("#.##");
 				String monthToGet = (String) monthCombo.getSelectedItem();
 				ArrayList<Session> sessionsToRecord = getSessionsFromMonth(currentUser.getSessionList(), monthToGet);
 				
-				double avDist = avgTime(sessionsToRecord);
-				lblMetres.setText(String.valueOf(avDist) + " Metres");
+				double avDist = avgDistance(sessionsToRecord);
+				lblMetres.setText(String.valueOf(df.format(avDist)) + " Metres");
 				
 				double avPace = avgPace(sessionsToRecord);
-				lblSecondmetre.setText(String.valueOf(avPace) + " Metres/Second");
+				lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Metres/Second");
 				
 				double calBurned = avgCaloriesBurned(sessionsToRecord);
-				lblCalories.setText(String.valueOf(calBurned) + " Calories");
+				lblCalories.setText(String.valueOf(df.format(calBurned)) + " Calories");
 				
 				double altUp = avgAltitudeUp(sessionsToRecord);
-				lblMetres_1.setText(String.valueOf(altUp) + " Metres");
+				lblMetres_1.setText(String.valueOf(df.format(altUp)) + " Metres");
 				
 				double altDown = avgAltitudeDown(sessionsToRecord);
-				lblMetres_2.setText(String.valueOf(altDown) + " Metres");
+				lblMetres_2.setText(String.valueOf(df.format(altDown)) + " Metres");
 				
 				card.show(mainPanel, "Records");
 			}
@@ -654,21 +664,11 @@ public class ActivityTracker {
 		mainPanel.add(byDate, "byDate");
 		byDate.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(278, 82, 174, 20);
-		byDate.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(278, 127, 174, 20);
-		byDate.add(textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblSelectDate = new JLabel("Select date 1 (DD-MM)");
-		lblSelectDate.setBounds(59, 85, 209, 14);
+		JLabel lblSelectDate = new JLabel("Select Date 1");
+		lblSelectDate.setBounds(59, 85, 230, 14);
 		byDate.add(lblSelectDate);
 		
-		JLabel lblSelectDate_1 = new JLabel("Select Date 2 (DD-MM)");
+		JLabel lblSelectDate_1 = new JLabel("Select Date 2 ");
 		lblSelectDate_1.setBounds(59, 130, 209, 14);
 		byDate.add(lblSelectDate_1);
 		
@@ -677,7 +677,48 @@ public class ActivityTracker {
 		JButton btnGetRecords = new JButton("Get Records");
 		btnGetRecords.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				card.show(mainPanel, "Records");
+				if(beforeBox.getSelectedItem() != null && afterBox.getSelectedItem() != null) {
+					String date1 = (String) beforeBox.getSelectedItem();
+					String date2 = (String) afterBox.getSelectedItem();
+					try {
+						if(isBefore(date1,date2)) {
+							try {
+								DecimalFormat df = new DecimalFormat("#.##");
+								ArrayList<Session> sessionsToRecord = getSessionsFromDays(currentUser.getSessionList(), date1, date2);
+								
+								double avDist = avgDistance(sessionsToRecord);
+								lblMetres.setText(String.valueOf(df.format(avDist)) + " Metres");
+								
+								double avPace = avgPace(sessionsToRecord);
+								lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Metres/Second");
+								
+								double calBurned = avgCaloriesBurned(sessionsToRecord);
+								lblCalories.setText(String.valueOf(df.format(calBurned)) + " Calories");
+								
+								double altUp = avgAltitudeUp(sessionsToRecord);
+								lblMetres_1.setText(String.valueOf(df.format(altUp)) + " Metres");
+								
+								double altDown = avgAltitudeDown(sessionsToRecord);
+								lblMetres_2.setText(String.valueOf(df.format(altDown)) + " Metres");
+								card.show(mainPanel, "Records");
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+						else {
+							card.show(mainPanel, "recordError");
+						}
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				}
+				else {
+					card.show(mainPanel, "recordError");
+				}
+					
 			}
 		});
 		btnGetRecords.setBounds(59, 217, 209, 23);
@@ -691,6 +732,18 @@ public class ActivityTracker {
 		});
 		btnBack_7.setBounds(363, 218, 209, 23);
 		byDate.add(btnBack_7);
+		
+		beforeBox = new JComboBox();
+		beforeBox.setBounds(299, 85, 240, 20);
+		byDate.add(beforeBox);
+		
+		afterBox = new JComboBox();
+		afterBox.setBounds(299, 127, 240, 20);
+		byDate.add(afterBox);
+		
+		JLabel lblSelectDateInterval = new JLabel("Select Date interval, From Date 1 to Date 2");
+		lblSelectDateInterval.setBounds(57, 11, 550, 14);
+		byDate.add(lblSelectDateInterval);
 		
 		JPanel Records = new JPanel();
 		mainPanel.add(Records, "Records");
@@ -745,6 +798,23 @@ public class ActivityTracker {
 		btnBack_8.setBounds(221, 221, 235, 23);
 		Records.add(btnBack_8);
 		
+		JPanel RecordError = new JPanel();
+		mainPanel.add(RecordError, "recordError");
+		RecordError.setLayout(null);
+		
+		JLabel lblInvalidDatesSelected = new JLabel("Invalid Dates Selected");
+		lblInvalidDatesSelected.setBounds(236, 11, 355, 14);
+		RecordError.add(lblInvalidDatesSelected);
+		
+		JButton btnBack_9 = new JButton("Back");
+		btnBack_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				card.show(mainPanel, "RecordOption");
+			}
+		});
+		btnBack_9.setBounds(205, 234, 206, 23);
+		RecordError.add(btnBack_9);
+		
 
 		
 		
@@ -756,14 +826,26 @@ public class ActivityTracker {
 		String[] thisDate;
 		for(Session curSession:allSessions){
 			thisDate = curSession.getDate().split("-");
-			for(String test:thisDate){
-				System.out.println(test);
-			}
 			if(thisDate[1].equals(month)){
 				sessionsInRange.add(curSession);
 			}
 		}
 		return sessionsInRange;
+	}
+	
+	public boolean isBefore(String before, String after) throws ParseException {
+		DateFormat sdf= new SimpleDateFormat("dd-mm-yyyy");
+		Date beforeDate = sdf.parse(before);
+		Date afterDate = sdf.parse(after);
+		boolean beforeBefore;
+		if(beforeDate.before(afterDate)) {
+			beforeBefore = true;
+		}
+		else {
+			beforeBefore = false;
+		}
+		
+		return beforeBefore;
 	}
 	
 	public ArrayList<Session> getSessionsFromDays(ArrayList<Session> allSessions, String firstDate, String secondDate) throws ParseException{
@@ -778,7 +860,7 @@ public class ActivityTracker {
 		for(Session curSession:allSessions){
 			thisSessionString = curSession.getDate();
 			thisSessionDate = sdf.parse(thisSessionString);
-			if(thisSessionDate.after(beforeDate) && thisSessionDate.before(afterDate)){
+			if(thisSessionDate.equals(beforeDate) || thisSessionDate.equals(afterDate) || (thisSessionDate.after(beforeDate) && thisSessionDate.before(afterDate))){
 				sessionsInRange.add(curSession);
 			}
 		}
@@ -860,7 +942,7 @@ public class ActivityTracker {
 		ArrayList<String> datesAlready = new ArrayList<String>();
 		
 		for(Session thisSession : currentUser.getSessionList()){
-			thisDate = (thisSession.getDate().split("-"))[1];
+			thisDate = (thisSession.getDate());
 			if(!(datesAlready.contains(thisDate))){
 				dayBox.addItem(thisDate);
 				datesAlready.add(thisDate);
@@ -876,19 +958,6 @@ public class ActivityTracker {
 		
 	}
 	
-	public double avgTime(ArrayList<Session> listOfSessions){
-		//iterate through list of sessions
-		int i = 0;
-		double totalTimes = 0;
-		while (i<listOfSessions.size()){
-		    //int times.add(listOfSessions[i].getTotalTime)
-		    totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
-		    i++;
-		}
-		//int totalTimes = times[1]+times[2] + ... times[n]
-		double avgTime = (totalTimes / listOfSessions.size());
-		return avgTime;
-		}
 		
 		
 		public double avgDistance(ArrayList<Session> listOfSessions){
@@ -896,7 +965,8 @@ public class ActivityTracker {
 			int i = 0;
 		    while (i<listOfSessions.size()){
 		    //int distances.add(listOfSessions[i].getTotalDistance)
-		    	totalDistances = (totalDistances + listOfSessions.get(i).getTotalDistance());
+		    	totalDistances += listOfSessions.get(i).getTotalDistance();
+		    	System.out.println(listOfSessions.get(i).getTotalDistance());
 		    	i++;
 		    }
 		//int totalDistances = distances[1]+distances[2] + ... distances[n]
