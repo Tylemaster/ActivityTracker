@@ -143,7 +143,9 @@ public class ActivityTracker {
 		
 		
 		
-		
+		/*If statement here if the username or password is invalid, take them to invalid page, otherwise to the home screen
+		 *if not invalid, user will be created with the entered createProfName and createProfPass variables and added to the external storage 
+		 */
 		JButton btnCreate = new JButton("Create");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -163,11 +165,6 @@ public class ActivityTracker {
 						card.show(mainPanel, "Invalid Create");
 					}
 
-
-					
-					/*If statement will have to be added here if the username or password is invalid, take them to invalid page, otherwise to the home screen
-					 *if not invalid, user will be created with the entered createProfName and createProfPass variables and added to the external storage 
-					 */
 					card.show(mainPanel, "Home");
 				}
 				else {
@@ -226,10 +223,10 @@ public class ActivityTracker {
 		JButton btnLogIn_1 = new JButton("Log In");
 		btnLogIn_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*if statement will have to be added here, if username or password is invalid take them to invalid page.
+				/*iif username or password is invalid take them to invalid page.
 				 * To check for validity, must see if username or password(logInName and logInPass) is null, or matched any of the stored usernames and passwords.
-				 * If it does match, user is valid, and taken to homescreen. The Statistics, Friends, and Devices panels must also be redrawn, with the information from
-				 * this user. (possibly add log in method)
+				 * If it does match, user is valid, and taken to homescreen. The Statistics and Devices panels must also be redrawn, with the information from
+				 * this user.
 				 */
 				if(!(logInName.getText().equals("")) && !(logInPass.getText().equals(""))) {
 					File currentFile = new File("src/Files/username.txt");
@@ -279,6 +276,7 @@ public class ActivityTracker {
 									DeviceCombo(comboBox, currentUser);
 									DateDayCombo(beforeBox,currentUser);
 									DateDayCombo(afterBox,currentUser);
+									userReadDevices.close();
 									break;
 								}
 							}
@@ -447,6 +445,8 @@ public class ActivityTracker {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						DateDayCombo(beforeBox,currentUser);
+						DateDayCombo(afterBox,currentUser);
 					}
 				}
 
@@ -474,10 +474,10 @@ public class ActivityTracker {
 		AddDevice.add(newDeviceName);
 		newDeviceName.setColumns(10);
 		
+		//The btnAdd listener will add the given device to the current users list of devices, and add the device name to the usernames devices txt file
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//add code here to add device (newDeviceName) to the current user profile, and redraw the import data page with this new device
 				card.show(mainPanel, "Import Data");
 				if(!(newDeviceName.getText().equals(""))) {
 					comboBox.addItem(newDeviceName.getText());
@@ -546,11 +546,37 @@ public class ActivityTracker {
 		East.setLayout(new BorderLayout(0, 0));
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//Activity table will pull from the currently selected session of the current user and display
 		String [] datColumns = {"Time", "Distance", "Altitude"};
 		Object[][] data = {{"Calories", new Integer(30), new Integer(62), new Integer(92)},{"Heart Rate", "100 bpm", "112 bpm", "106 bpm"}, {"Ave. Speed", "6 km/h", "10 km/h", "8 km/h"}, {"Dehydration", "10ml", "12ml", "22ml"}, {"Cum. Distance", "1km", "2km", "2km"}};
 		ActivityTable = new JTable(data, datColumns);
 		ActivityTable.setFillsViewportHeight(true);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		JScrollPane TableScroll = new JScrollPane(ActivityTable);
 		East.add(TableScroll, BorderLayout.EAST);
@@ -621,7 +647,7 @@ public class ActivityTracker {
 		monthCombo.setBounds(368, 114, 254, 20);
 		byMonth.add(monthCombo);
 		
-		//The get session method Month wise will have to be called here, and then the get records from the group of sessions
+		//The btnSelectMonth will get a list of sessions that have the same month given in the combo box, and set the records page to the record from these sessions
 		JButton btnSelectMonth = new JButton("Select Month");
 		btnSelectMonth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -673,7 +699,8 @@ public class ActivityTracker {
 		byDate.add(lblSelectDate_1);
 		
 		
-		//will have to add method here to parse the two given strings to get the date, and go through user sessions to find dates between these two
+		//The get record button will check the combo boxes for valid dates, and if they are valid, will set the values of the record page to the values returned from the list of sessions
+		// that are between the two dates(inclusive)
 		JButton btnGetRecords = new JButton("Get Records");
 		btnGetRecords.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -820,7 +847,7 @@ public class ActivityTracker {
 		
 
 	}
-	
+	//this method will take in a list of sessions and return all the sessions that have the given month
 	public ArrayList<Session> getSessionsFromMonth(ArrayList<Session> allSessions, String month){
 		ArrayList<Session> sessionsInRange = new ArrayList<Session>();
 		String[] thisDate;
@@ -833,6 +860,7 @@ public class ActivityTracker {
 		return sessionsInRange;
 	}
 	
+	//this method will take in two dates as strings and will return a boolean denoting whether the first date comes after the second date
 	public boolean isBefore(String before, String after) throws ParseException {
 		DateFormat sdf= new SimpleDateFormat("dd-mm-yyyy");
 		Date beforeDate = sdf.parse(before);
@@ -848,6 +876,7 @@ public class ActivityTracker {
 		return beforeBefore;
 	}
 	
+	//This method will take in a list of sessions, and two dates as strings, and return a list of sessions whos dates fall between the two
 	public ArrayList<Session> getSessionsFromDays(ArrayList<Session> allSessions, String firstDate, String secondDate) throws ParseException{
 		ArrayList<Session> sessionsInRange = new ArrayList<Session>();
 		DateFormat sdf= new SimpleDateFormat("dd-mm-yyyy");
@@ -869,6 +898,7 @@ public class ActivityTracker {
 		return sessionsInRange;
 	}
 	
+	//This method will take in a Scanner object that is reading the data file, and will return a list of session objects gotten from parsing this file
 	public static ArrayList<Session> readSessionsFromData(Scanner fileToRead){
 		ArrayList<Double> tempTimeList = new ArrayList<Double>();
 		ArrayList<Double> tempDistanceList= new ArrayList<Double>();
@@ -906,8 +936,7 @@ public class ActivityTracker {
 	
 	//This is the method that will read in data in CSV form. To be used, the Scanner passed into it must have the NEXT LINE be the FIRST DATA POINT (e.g (0,0,0))
 	//that means that before this method is used, you must parse the file you are reading from to get to the proper start, and then pass the scanner to the method when it is in the aforementioned state
-	//If you are reading from the USER FILE, the date passed in must be the date used as a header for the data in the user file.
-	//If you are importing the data, an empty string "" should be passed in, and the date will be made for this session WITHIN the method.
+	//The date passed in must be the date used as a header for the data in the user file.
 	public static Session readSessionsFromUser(Scanner fileToRead, String date){
 		String reportDate = date;
 
@@ -937,6 +966,7 @@ public class ActivityTracker {
 		return tempSession;
 	}
 	
+	//Method to add all dates from current users sessions to a combo box
 	public void DateDayCombo(JComboBox dayBox, UserApp currentUser){
 		String thisDate;
 		ArrayList<String> datesAlready = new ArrayList<String>();
@@ -950,6 +980,7 @@ public class ActivityTracker {
 		}
 	}
 	
+	//Method to add all device names of current user to a combo box
 	public void DeviceCombo(JComboBox deviceBox, UserApp currentUser){
 		String thisDevice;
 		for(Device currentDevice: currentUser.getDeviceList()){
@@ -959,75 +990,76 @@ public class ActivityTracker {
 	}
 	
 		
-		
-		public double avgDistance(ArrayList<Session> listOfSessions){
-			double totalDistances = 0;
-			int i = 0;
-		    while (i<listOfSessions.size()){
-		    //int distances.add(listOfSessions[i].getTotalDistance)
-		    	totalDistances += listOfSessions.get(i).getTotalDistance();
-		    	System.out.println(listOfSessions.get(i).getTotalDistance());
-		    	i++;
-		    }
+	//method to get the average distance from a list of sessions
+	public double avgDistance(ArrayList<Session> listOfSessions){
+		double totalDistances = 0;
+		int i = 0;
+		while (i<listOfSessions.size()){
+			//int distances.add(listOfSessions[i].getTotalDistance)
+			totalDistances += listOfSessions.get(i).getTotalDistance();
+			i++;
+		}
 		//int totalDistances = distances[1]+distances[2] + ... distances[n]
-			double avgDistance = (totalDistances / listOfSessions.size());
-			return avgDistance;
-		}
-		
-		
-		public double avgPace(ArrayList<Session> listOfSessions){
+		double avgDistance = (totalDistances / listOfSessions.size());
+		return avgDistance;
+	}
+
+	//method to get the average pace from a list of sessions
+	public double avgPace(ArrayList<Session> listOfSessions){
 		//distance / time
-			
-			double totalDistances = 0;
-			double totalTimes = 0;
-			int i = 0;
-		    while (i<listOfSessions.size()){
-		    //int distances.add(listOfSessions[i].getTotalDistance)
-		    	totalDistances = (totalDistances + listOfSessions.get(i).getTotalDistance());
-		    	totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
-		    	i++;
-		    }
-		    double avgPace = (totalDistances / totalTimes);
-		    return avgPace;
+
+		double totalDistances = 0;
+		double totalTimes = 0;
+		int i = 0;
+		while (i<listOfSessions.size()){
+			//int distances.add(listOfSessions[i].getTotalDistance)
+			totalDistances = (totalDistances + listOfSessions.get(i).getTotalDistance());
+			totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
+			i++;
 		}
-		
-		
-		public double avgCaloriesBurned(ArrayList<Session> listOfSessions){
+		double avgPace = (totalDistances / totalTimes);
+		return avgPace;
+	}
+
+	//Method to get the average calories burned from a list of sessions
+	public double avgCaloriesBurned(ArrayList<Session> listOfSessions){
 		//average = 60 calories per km	
-			double totalDistance = 0;
-			int i = 0;
-			while (i<listOfSessions.size()){
-			    //int distances.add(listOfSessions[i].getTotalDistance)
-			    	totalDistance = (totalDistance + listOfSessions.get(i).getTotalDistance());
-			    	i++;
-			    }
-		    double avgCaloriesBurned = totalDistance * 0.06;
-		    return avgCaloriesBurned;
+		double totalDistance = 0;
+		int i = 0;
+		while (i<listOfSessions.size()){
+			//int distances.add(listOfSessions[i].getTotalDistance)
+			totalDistance = (totalDistance + listOfSessions.get(i).getTotalDistance());
+			i++;
 		}
-		
-		public double avgAltitudeUp(ArrayList<Session> listOfSessions){
-			int i = 0;
-			double totalUpAlt = 0;
-		    while (i<listOfSessions.size()){
-		    	totalUpAlt = (totalUpAlt + listOfSessions.get(i).getUpAltitude());
-		    	i++;
-		    }
-		    double avgUpAlt = 0;
-		    avgUpAlt = (totalUpAlt / listOfSessions.size());
-		    return avgUpAlt;
+		double avgCaloriesBurned = totalDistance * 0.06;
+		return avgCaloriesBurned;
+	}
+
+	//Method to get the average upward altitude from a list of sessions 
+	public double avgAltitudeUp(ArrayList<Session> listOfSessions){
+		int i = 0;
+		double totalUpAlt = 0;
+		while (i<listOfSessions.size()){
+			totalUpAlt = (totalUpAlt + listOfSessions.get(i).getUpAltitude());
+			i++;
 		}
-		
-		public double avgAltitudeDown(ArrayList<Session> listOfSessions){
-			int i = 0;
-			double totalDownAlt = 0;
-		    while (i<listOfSessions.size()){
-		    	totalDownAlt = (totalDownAlt + listOfSessions.get(i).getDownAltitude());
-		    	i++;
-		    }
-		    double avgDownAlt = 0;
-		    avgDownAlt = (totalDownAlt / listOfSessions.size());
-		    return avgDownAlt;
+		double avgUpAlt = 0;
+		avgUpAlt = (totalUpAlt / listOfSessions.size());
+		return avgUpAlt;
+	}
+
+	//Method to get the average downward altitude from a list of sessions
+	public double avgAltitudeDown(ArrayList<Session> listOfSessions){
+		int i = 0;
+		double totalDownAlt = 0;
+		while (i<listOfSessions.size()){
+			totalDownAlt = (totalDownAlt + listOfSessions.get(i).getDownAltitude());
+			i++;
 		}
+		double avgDownAlt = 0;
+		avgDownAlt = (totalDownAlt / listOfSessions.size());
+		return avgDownAlt;
+	}
 
 }
 
