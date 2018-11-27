@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
@@ -715,6 +716,39 @@ public class ActivityTracker {
 
 	}
 	
+	public ArrayList<Session> getSessionsFromMonth(ArrayList<Session> allSessions, String month){
+		ArrayList<Session> sessionsInRange = null;
+		String[] thisDate;
+		for(Session curSession:allSessions){
+			thisDate = curSession.getDate().split("-");
+			if(thisDate[1].equals(month)){
+				sessionsInRange.add(curSession);
+			}
+		}
+		return sessionsInRange;
+	}
+	
+	public ArrayList<Session> getSessionsFromDays(ArrayList<Session> allSessions, String firstDate, String secondDate) throws ParseException{
+		ArrayList<Session> sessionsInRange = null;
+		DateFormat sdf= new SimpleDateFormat("dd-mm-yyyy");
+		Date beforeDate = sdf.parse(firstDate);
+		Date afterDate = sdf.parse(secondDate);
+		Date thisSessionDate;
+		String thisSessionString;
+		
+		
+		for(Session curSession:allSessions){
+			thisSessionString = curSession.getDate();
+			thisSessionDate = sdf.parse(thisSessionString);
+			if(thisSessionDate.after(beforeDate) && thisSessionDate.before(afterDate)){
+				sessionsInRange.add(curSession);
+			}
+		}
+		
+		
+		return sessionsInRange;
+	}
+	
 	public static ArrayList<Session> readSessionsFromData(Scanner fileToRead){
 		ArrayList<Float> tempTimeList = new ArrayList<Float>();
 		ArrayList<Float> tempDistanceList= new ArrayList<Float>();
@@ -782,6 +816,101 @@ public class ActivityTracker {
 		tempSession = new Session(reportDate, tempTimeList, tempDistanceList, tempAltitudeList);
 		return tempSession;
 	}
+	
+	public void DateDayCombo(JComboBox dayBox, UserApp currentUser){
+		String thisDate;
+		ArrayList<String> datesAlready = new ArrayList<String>();
+		
+		for(Session thisSession : currentUser.getSessionList()){
+			thisDate = (thisSession.getDate().split("-"))[1];
+			dayBox.addItem(thisDate);
+		}
+	}
+	
+	public double avgTime(ArrayList<Session> listOfSessions){
+		//iterate through list of sessions
+		int i = 0;
+		double totalTimes = 0;
+		while (i<listOfSessions.size()){
+		    //int times.add(listOfSessions[i].getTotalTime)
+		    totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
+		    i++;
+		}
+		//int totalTimes = times[1]+times[2] + ... times[n]
+		double avgTime = (totalTimes / listOfSessions.size());
+		avgTime = (avgTime / 60);
+		return avgTime;
+		}
+		
+		
+		public double avgDistance(ArrayList<Session> listOfSessions){
+			double totalDistances = 0;
+			int i = 0;
+		    while (i<listOfSessions.size()){
+		    //int distances.add(listOfSessions[i].getTotalDistance)
+		    	totalDistances = (totalDistances + listOfSessions.get(i).getTotalDistance());
+		    	i++;
+		    }
+		//int totalDistances = distances[1]+distances[2] + ... distances[n]
+			double avgDistance = (totalDistances / listOfSessions.size());
+			avgDistance = (avgDistance / 1000);
+			return avgDistance;
+		}
+		
+		
+		public double avgPace(ArrayList<Session> listOfSessions){
+		//distance / time
+			
+			double totalDistances = 0;
+			double totalTimes = 0;
+			int i = 0;
+		    while (i<listOfSessions.size()){
+		    //int distances.add(listOfSessions[i].getTotalDistance)
+		    	totalDistances = (totalDistances + listOfSessions.get(i).getTotalDistance());
+		    	totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
+		    	i++;
+		    }
+		    double avgPace = (totalDistances / totalTimes);
+		    return avgPace;
+		}
+		
+		
+		public double avgCaloriesBurned(ArrayList<Session> listOfSessions){
+		//average = 60 calories per km	
+			double totalDistance = 0;
+			int i = 0;
+			while (i<listOfSessions.size()){
+			    //int distances.add(listOfSessions[i].getTotalDistance)
+			    	totalDistance = (totalDistance + listOfSessions.get(i).getTotalDistance());
+			    	i++;
+			    }
+		    double avgCaloriesBurned = totalDistance * 60;
+		    return avgCaloriesBurned;
+		}
+		
+		public double avgAltitudeUp(ArrayList<Session> listOfSessions){
+			int i = 0;
+			double totalUpAlt = 0;
+		    while (i<listOfSessions.size()){
+		    	totalUpAlt = (totalUpAlt + listOfSessions.get(i).getUpAltitude());
+		    	i++;
+		    }
+		    double avgUpAlt = 0;
+		    avgUpAlt = (totalUpAlt / listOfSessions.size());
+		    return avgUpAlt;
+		}
+		
+		public double avgAltitudeDown(ArrayList<Session> listOfSessions){
+			int i = 0;
+			double totalDownAlt = 0;
+		    while (i<listOfSessions.size()){
+		    	totalDownAlt = (totalDownAlt + listOfSessions.get(i).getDownAltitude());
+		    	i++;
+		    }
+		    double avgDownAlt = 0;
+		    avgDownAlt = (totalDownAlt / listOfSessions.size());
+		    return avgDownAlt;
+		}
 }
 
 
