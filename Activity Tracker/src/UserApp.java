@@ -84,7 +84,7 @@ public class UserApp {
 	}
 	
 	
-	//This method send a request to a new friend
+	//This method will send a request to a new friend
 	public void sendRequest(){
 		
 	}
@@ -99,10 +99,12 @@ public class UserApp {
 		
 	}
 	
+	//add session to users session list
 	public void updateSessionList(Session newSession) {
 		this.sessionList.add(newSession);
 	}
 	
+	//add device to users device list
 	public void updateDeviceList(Device newDevice) {
 		this.deviceList.add(newDevice);
 	}

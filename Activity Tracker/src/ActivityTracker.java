@@ -970,6 +970,7 @@ public class ActivityTracker {
 	public void DateDayCombo(JComboBox dayBox, UserApp currentUser){
 		String thisDate;
 		ArrayList<String> datesAlready = new ArrayList<String>();
+		dayBox.removeAllItems();
 		
 		for(Session thisSession : currentUser.getSessionList()){
 			thisDate = (thisSession.getDate());

@@ -58,16 +58,19 @@ public class Session{
 		this.altitude = altitude;
 	}
 	
+	//method to get the last recorded time in time array
 	public double getTotalTime(){
 		double totTime = time.get(time.size() - 1);
 		return totTime;
 	}
 	
+	//method to geth last recorded distance in distance array
 	public double getTotalDistance(){
 		double totDist = distance.get(distance.size() - 1);
 		return totDist;
 	}
 	
+	//method to return total metres gone uphill in this session
 	public double getUpAltitude(){
 		double lastAlt = (float) 0;
 		double tempAlt = (float) 0;
@@ -81,7 +84,7 @@ public class Session{
 		}
 		return altUp;
 	}
-	
+	//method to return total metres gone downhill in this session
 	public double getDownAltitude(){
 		double lastAlt = (float) 0;
 		double tempAlt = (float) 0;
@@ -98,5 +101,3 @@ public class Session{
 
 
 }
-		
-	//this method will take in all the changed data that the user gives and update the current session
