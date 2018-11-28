@@ -18,12 +18,16 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.Color;
 import java.awt.ScrollPane;
 import javax.swing.JScrollPane;
 import java.awt.Panel;
 import java.awt.FlowLayout;
 import javax.swing.JList;
+import javax.print.attribute.standard.PrinterLocation;
 import javax.swing.Box;
 
 import java.io.File;
@@ -53,6 +57,11 @@ public class ActivityTracker {
 	private JLabel lblMetres_2;
 	private JComboBox beforeBox;
 	private JComboBox afterBox;
+	private String[] columnNames = {"Session#", "Date", "Time(s)", "Distance(m)", "Alt Up(m)", "Alt Down(m)"};
+	private Object[][] data;
+	private JScrollPane TableScroll;
+	private JPanel Statisitics;
+	private JPanel East;
 
 	/**
 	 * Launch the application.
@@ -276,7 +285,14 @@ public class ActivityTracker {
 									DeviceCombo(comboBox, currentUser);
 									DateDayCombo(beforeBox,currentUser);
 									DateDayCombo(afterBox,currentUser);
+									
+									
+									data = newJtable(currentUser.getSessionList());
+									East.removeAll();
+									East.add(new JScrollPane(new JTable(data, columnNames)));
+									Statisitics.repaint();
 									userReadDevices.close();
+									
 									break;
 								}
 							}
@@ -447,6 +463,10 @@ public class ActivityTracker {
 						}
 						DateDayCombo(beforeBox,currentUser);
 						DateDayCombo(afterBox,currentUser);
+						data = newJtable(currentUser.getSessionList());
+						East.removeAll();
+						East.add(new JScrollPane(new JTable(data, columnNames)));
+						Statisitics.repaint();
 					}
 				}
 
@@ -505,7 +525,7 @@ public class ActivityTracker {
 		btnNewButton.setBounds(214, 207, 121, 23);
 		AddDevice.add(btnNewButton);
 		
-		JPanel Statisitics = new JPanel();
+		Statisitics = new JPanel();
 		mainPanel.add(Statisitics, "Statistics");
 		Statisitics.setLayout(new BorderLayout(0, 0));
 		
@@ -541,7 +561,7 @@ public class ActivityTracker {
 		});
 		lower.add(btnBack_4);
 		
-		JPanel East = new JPanel();
+		East = new JPanel();
 		Statisitics.add(East, BorderLayout.EAST);
 		East.setLayout(new BorderLayout(0, 0));
 		
@@ -559,9 +579,9 @@ public class ActivityTracker {
 		
 		
 		//Activity table will pull from the currently selected session of the current user and display
-		String [] datColumns = {"Time", "Distance", "Altitude"};
-		Object[][] data = {{"Calories", new Integer(30), new Integer(62), new Integer(92)},{"Heart Rate", "100 bpm", "112 bpm", "106 bpm"}, {"Ave. Speed", "6 km/h", "10 km/h", "8 km/h"}, {"Dehydration", "10ml", "12ml", "22ml"}, {"Cum. Distance", "1km", "2km", "2km"}};
-		ActivityTable = new JTable(data, datColumns);
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		ActivityTable = new JTable(model);
+		
 		ActivityTable.setFillsViewportHeight(true);
 		
 		
@@ -578,7 +598,7 @@ public class ActivityTracker {
 		
 		
 		
-		JScrollPane TableScroll = new JScrollPane(ActivityTable);
+		TableScroll = new JScrollPane(ActivityTable);
 		East.add(TableScroll, BorderLayout.EAST);
 		
 		JPanel Header = new JPanel();
@@ -1065,6 +1085,21 @@ public class ActivityTracker {
 		double avgDownAlt = 0;
 		avgDownAlt = (totalDownAlt / listOfSessions.size());
 		return avgDownAlt;
+	}
+	
+	public Object[][] newJtable( ArrayList<Session> listOfSessions) {
+		String[] columnNames = {"Session#", "Date", "Time(s)", "Distance(m)", "Alt Up(m)", "Alt Down(m)"};
+		Object[][] data = new Object[listOfSessions.size()][6];
+		for(int i = 0; i < listOfSessions.size(); i++) {
+			
+			data[i][0] = i;
+			data[i][1] = listOfSessions.get(i).getDate();
+			data[i][2] = listOfSessions.get(i).getTotalTime();
+			data[i][3] = listOfSessions.get(i).getTotalDistance();
+			data[i][4] = listOfSessions.get(i).getUpAltitude();
+			data[i][5] = listOfSessions.get(i).getDownAltitude();
+		}
+		return data;
 	}
 
 }
