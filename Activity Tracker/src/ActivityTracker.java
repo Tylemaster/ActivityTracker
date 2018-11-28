@@ -1061,7 +1061,6 @@ public class ActivityTracker {
 	//Method to read all data from current session that should be in the JTable, and return a 2-D array with this info
 	//for all sessions
 	public Object[][] newJtable( ArrayList<Session> listOfSessions) {
-		String[] columnNames = {"Session#", "Date", "Time(s)", "Distance(m)", "Alt Up(m)", "Alt Down(m)"};
 		Object[][] data = new Object[listOfSessions.size()][6];
 		for(int i = 0; i < listOfSessions.size(); i++) {
 			
