@@ -565,39 +565,11 @@ public class ActivityTracker {
 		Statisitics.add(East, BorderLayout.EAST);
 		East.setLayout(new BorderLayout(0, 0));
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		//Activity table will pull from the currently selected session of the current user and display
-		DefaultTableModel model = new DefaultTableModel(data, columnNames);
-		ActivityTable = new JTable(model);
-		
+		Object[][] dataNew = {{"-","-","-","-","-","-"}};
+		ActivityTable = new JTable(dataNew, columnNames);		
 		ActivityTable.setFillsViewportHeight(true);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 		TableScroll = new JScrollPane(ActivityTable);
 		East.add(TableScroll, BorderLayout.EAST);
 		
@@ -1086,7 +1058,8 @@ public class ActivityTracker {
 		avgDownAlt = (totalDownAlt / listOfSessions.size());
 		return avgDownAlt;
 	}
-	
+	//Method to read all data from current session that should be in the JTable, and return a 2-D array with this info
+	//for all sessions
 	public Object[][] newJtable( ArrayList<Session> listOfSessions) {
 		String[] columnNames = {"Session#", "Date", "Time(s)", "Distance(m)", "Alt Up(m)", "Alt Down(m)"};
 		Object[][] data = new Object[listOfSessions.size()][6];
