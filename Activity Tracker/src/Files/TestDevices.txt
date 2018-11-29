@@ -1,4 +1,2 @@
 Devices
-Input Format.csv
-Input Format2.csv
 Input Format3.csv

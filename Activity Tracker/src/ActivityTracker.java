@@ -649,10 +649,10 @@ public class ActivityTracker {
 				ArrayList<Session> sessionsToRecord = getSessionsFromMonth(currentUser.getSessionList(), monthToGet);
 				
 				double avDist = avgDistance(sessionsToRecord);
-				lblMetres.setText(String.valueOf(df.format(avDist)) + " Metres");
+				lblMetres.setText(String.valueOf(df.format(avDist)) + " Km");
 				
 				double avPace = avgPace(sessionsToRecord);
-				lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Metres/Second");
+				lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Min/Km");
 				
 				double calBurned = avgCaloriesBurned(sessionsToRecord);
 				lblCalories.setText(String.valueOf(df.format(calBurned)) + " Calories");
@@ -706,10 +706,10 @@ public class ActivityTracker {
 								ArrayList<Session> sessionsToRecord = getSessionsFromDays(currentUser.getSessionList(), date1, date2);
 								
 								double avDist = avgDistance(sessionsToRecord);
-								lblMetres.setText(String.valueOf(df.format(avDist)) + " Metres");
+								lblMetres.setText(String.valueOf(df.format(avDist)) + " Km");
 								
 								double avPace = avgPace(sessionsToRecord);
-								lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Metres/Second");
+								lblSecondmetre.setText(String.valueOf(df.format(avPace)) + " Min/Km");
 								
 								double calBurned = avgCaloriesBurned(sessionsToRecord);
 								lblCalories.setText(String.valueOf(df.format(calBurned)) + " Calories");
@@ -998,7 +998,7 @@ public class ActivityTracker {
 			i++;
 		}
 		//int totalDistances = distances[1]+distances[2] + ... distances[n]
-		double avgDistance = (totalDistances / listOfSessions.size());
+		double avgDistance = ((totalDistances/1000) / listOfSessions.size());
 		return avgDistance;
 	}
 
@@ -1015,7 +1015,7 @@ public class ActivityTracker {
 			totalTimes = (totalTimes + listOfSessions.get(i).getTotalTime());
 			i++;
 		}
-		double avgPace = (totalDistances / totalTimes);
+		double avgPace = ((totalTimes / 60)/ (totalDistances/1000));
 		return avgPace;
 	}
 
